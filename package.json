@@ -1,0 +1,28 @@
+{
+  "name": "materialg",
+  "version": "0.0.1",
+  "description": "UI Javascript Library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marxluz/materialg.git"
+  },
+  "keywords": [
+    "UI",
+    "Javascript",
+    "Cordova"
+  ],
+  "author": "Breno Marques Luz, Paulo Sergio Navarro Mares de Souza",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/marxluz/materialg/issues"
+  },
+  "homepage": "https://github.com/marxluz/materialg#readme",
+  "dependencies": {
+    "browserfy": "^1.0.0",
+    "jquery": "^3.2.0"
+  }
+}
