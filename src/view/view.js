@@ -1,8 +1,6 @@
-var jquery = CE('jquery');
-
 var CE = function(tag){
 
-    var element = jquery(document.createElement(tag));
+    var element = $(document.createElement(tag));
     for(var i = 1; i < arguments.length; i++){
         element.addClass(arguments[i]);
     }

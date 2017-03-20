@@ -12,6 +12,10 @@ view.prototype = new Base;
 view.prototype.constructor = view;
 module.exports = view;
 
+view.prototype.setTitle = function(title){
+  this.title = title;
+};
+
 view.prototype.make = function(){
 
   var div = CE('div', 'box');
