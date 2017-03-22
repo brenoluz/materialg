@@ -5,7 +5,7 @@ var view = function(name){
   this.list      = [];
   this.name      = !!name ? name : '';
   this.title     = '';
-  this.value     = null;
+  this.value     = '';
   this.container = null;
 };
 view.prototype = new Base;

@@ -5,6 +5,8 @@ var Decorator = function(element, msg) {
     element.validators = [];
     element.filters    = [];
 
+    if(!element.name) element.name = element.attr('name');
+
     element.addValidator = function(validator){
         this.validators.push(validator);
     };

@@ -9,7 +9,7 @@ Container.prototype.append = function(element){
     this.elements.push(element);
 };
 
-Container.prototype.isValid = function(cbTrue, cbFalse, obj){
+Container.prototype.isValid = function(cb, obj){
 
   var promises = [];
   for(var e in this.elements){
@@ -23,11 +23,7 @@ Container.prototype.isValid = function(cbTrue, cbFalse, obj){
   $.when.apply(undefined, promises).promise().done(function(){
 
       var args = Array.prototype.slice.call(arguments);
-      if(args.indexOf(false) < 0){
-          if(cbTrue) cbTrue();
-      }else{
-          if(cbFalse) cbFalse();
-      }
+      cb(args.indexOf(false) < 0);
   });
 };
 
@@ -36,7 +32,8 @@ Container.prototype.getValues = function(){
   var values = {};
   for(var e in this.elements){
     var element = this.elements[e];
-    if(!!element.name) values[element.name] = element.getValue();
+    var name    = !!element.name ? element.name : element.attr('name');
+    if(!!name)  values[name] = element.getValue();
   }
 
   return values;

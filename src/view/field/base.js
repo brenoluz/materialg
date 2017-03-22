@@ -26,4 +26,6 @@ base.prototype.val = function(value){
   }
 };
 
-base.prototype.makeInputs = function(){ /*For extend*/ };
+base.prototype.attr        = function(){ /*for overwrite*/ };
+base.prototype.removeClass = function(){ /*for overwrite*/ };
+base.prototype.makeInputs  = function(){ /*for overwrite*/ };
