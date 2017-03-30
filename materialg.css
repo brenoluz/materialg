@@ -1,0 +1,135 @@
+html, body{
+    height: 100%;
+    width: 100%;
+}
+#MG_Date_Back *{
+    box-sizing: border-box;
+}
+#MG_Date_Container{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    height: 100%;
+    width: 100%;
+    max-width: 500px;
+    max-height: 400px;
+    font-family: Verdana, Arial;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    font-size: 28px;
+}
+#MG_Date_Back{
+    position: fixed;
+    display: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 60px;
+    background-color: rgba(0,0,0,0.7);
+    z-index: 9999;
+}
+#MG_Date_Back *{
+    box-sizing: border-box;
+}
+#MG_Date{
+    background-color: #fff;
+
+}
+#MG_Date_cover{
+    position: absolute;
+    background-color: transparent;
+    flex-direction: column;
+    pointer-events: none;
+}
+#MG_Date_cover>div{
+}
+#MG_Date_cover>div:nth-child(2n+1) {
+    height: 40%;
+    background-color: rgba(255,255,255,0.6);
+}
+#MG_Date_cover>div:nth-child(1) {
+
+}
+#MG_Date_cover>div:nth-child(2) {
+    height: 20%;
+    border: 1px solid green;
+    background-color: rgba(0,0,0,0);
+}
+#MG_Date_cover>div:nth-child(3) {
+
+}
+.MG_Date{
+    position:relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    text-align: center;
+    height: 75%;
+    width: 100%;
+    max-height:600px;
+    margin: 0 auto;
+    padding:0;
+    font-family: Verdana, Arial;
+}
+#MG_Date>div{
+    display: inline-block;
+    height: 100%;
+    overflow: hidden;
+}
+#MG_Date_celday{
+    width: 25%;
+}
+#MG_Date_celmonth{
+    width: 45%;
+}
+#MG_Date_celyear{
+    width: 30%;
+}
+#MG_Date_day, #MG_Date_month, #MG_Date_year{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+#MG_Date .scroller{
+    width:  calc(100% + 20px);
+    height: 100%;
+    padding: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+#MG_Date .scroller div{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+    height: 20%;
+    padding: 5px 25px 5px 5px;
+    text-align: center;
+    cursor: pointer;
+
+}
+#MG_Year{
+    display: none;
+}
+#MG_Date_Buttons{
+    height: 25%;
+}
+#MG_Date_Back input{
+    display: inline-block;
+    height: 100%;
+    width: 50%;
+    font-size: 28px;
+    text-align: center;
+    border: 0 none transparent;
+    cursor: pointer;
+}
+#MG_Date_Back .send{
+    background-color: green;
+    color: #fff;
+}
+#MG_Date_Back .cancel{
+    background-color: #fff;
+}
