@@ -5,7 +5,7 @@ var mgdate = function(element){
             var val = $(this).val();
             $(this).attr('readonly', true);
             var day = '', month = '', year = '';
-            var arrayValue = val.split('-')
+            var arrayValue = val.split('-');
             var valid = self.validDate(arrayValue[2],arrayValue[1],arrayValue[0])
             if(val === undefined || val === '' || valid === false){
                 var today = new Date();
@@ -17,11 +17,13 @@ var mgdate = function(element){
                 month = Number(arrayValue[1]);
                 year = Number(arrayValue[0]);
             }
+           
             self.init($(this),day,month,year,lang);
         });
     };
     
     mgdate.prototype.init = function(element, day, month, year, lang){
+        
         this.element = element;
         this.day   = day;
         this.month = month;
@@ -29,7 +31,10 @@ var mgdate = function(element){
         
         this.lang = lang; 
         this.loadHtml();
-        $("#MG_Date_Back").fadeIn("fast");
+        
+        this.nLoadYearsPrev = 500;
+        this.nLoadYearsNext = 500;
+        
         this.dayAdjust = 1;
         this.monthAdjust = 1;
         this.yearAdjust = 1;
@@ -37,18 +42,28 @@ var mgdate = function(element){
         this.loadYears();
         elMonth = this.loadMonths();
         elDay = this.loadDays();
+        var self = this;
+        setTimeout(function(){
+            self.setDay(elDay);
+            self.setMonth(elMonth);
+            self.setYear(self.year);
+        },1)
         
-        this.setYear(this.year);
-        this.setMonth(elMonth);
-        this.setDay(elDay);
         this.events();
+        this.wait = 50;
+        this.mgDateBack = '';
+        this.dayScroller = '';
+        this.monthScroller = '';
+        this.yearScroller = '';
+        
+        $("#MG_Date_Back").fadeIn("fast");
         
     }
     mgdate.prototype.setDay = function(element){
         if(element.length > 0){
             this.jumpToDay(element);
         }else{
-            $("#MG_Date_day .scroller").html('');
+            this.dayScroller.html('');
             var selected = this.loadDays();
             this.jumpToDay(selected);
         }
@@ -190,17 +205,15 @@ var mgdate = function(element){
        
     }
     mgdate.prototype.infiniteScrollDay = function(){
-        var cont = $("#MG_Date_day .scroller");
-        var wait = 250;
-    
+        //var cont = $("#MG_Date_day .scroller");
         
-        if(this.dayAdjust === 1){
+        //if(this.dayAdjust === 1){
             clearTimeout($.data(this, 'scrollTimer'));
             var self = this;
             $.data(this, 'scrollTimer', setTimeout(function() {
                 self.adjustScrollDay();
-            }, wait));
-        }
+            }, self.wait));
+        //}
         
     }
     mgdate.prototype.adjustScrollDay = function(){
@@ -266,16 +279,14 @@ var mgdate = function(element){
         cont.scrollTop(newValue);
     }
     mgdate.prototype.infiniteScrollMonth = function(){
-        var cont = $("#MG_Date_month .scroller");
-        var wait = 250;
         
-        if(this.monthAdjust === 1){
+        //if(this.monthAdjust === 1){
             clearTimeout($.data(this, 'scrollTimer'));
             var self = this;
             $.data(this, 'scrollTimer', setTimeout(function() {
                 self.adjustScrollMonth();
-            }, wait));
-        }
+            }, self.wait));
+        //}
         
     }
     mgdate.prototype.adjustScrollMonth = function(){
@@ -415,7 +426,7 @@ var mgdate = function(element){
         this.year = Number(element.data('year'));
         $("#ySelected").attr('id', '');
         element.attr("id", 'ySelected');
-        this.loadYears();
+        //this.loadYears();
         this.reloadDays();
         
         scrollValue = this.getScrollValueEl(element);
@@ -470,7 +481,7 @@ var mgdate = function(element){
         var selected = $("#ySelected");
         var tYear = this.year - 1;
         var prev = selected.prev();
-        for(var i = 0; i < 60; i++){
+        for(var i = 0; i < this.nLoadYearsPrev; i++){
             var html = this.getYearHtml(tYear);
             if(prev.length === 0){ 
                 $("#MG_Date_year .scroller").prepend(html);
@@ -497,7 +508,7 @@ var mgdate = function(element){
         var selected = $("#ySelected");
         var tYear = this.year + 1;
         var next = selected.next();
-        for(var i = 0; i < 60; i++){
+        for(var i = 0; i < this.nLoadYearsNext; i++){
             if(next.length === 0){ 
                 var html = this.getYearHtml(tYear);
                 $("#MG_Date_year .scroller").append(html);
@@ -516,17 +527,14 @@ var mgdate = function(element){
        
     }
     mgdate.prototype.infiniteScrollYear = function(){
-        var cont = $("#MG_Date_year .scroller");
-        var wait = 250;
-    
         
-        if(this.yearAdjust === 1){
+       // if(this.yearAdjust === 1){
             clearTimeout($.data(this, 'scrollTimer'));
             var self = this;
             $.data(this, 'scrollTimer', setTimeout(function() {
                 self.adjustScrollYear();
-            }, wait));
-        }
+            }, self.wait));
+       // }
         
     }
     mgdate.prototype.adjustScrollYear = function(){
@@ -571,22 +579,33 @@ var mgdate = function(element){
     }
     mgdate.prototype.events = function(id){
         var self = this;
-        $("body").delegate("#MG_Date_day .scroller div","click",function() {
-            if(self.dayAdjust === 1){
-                self.goToDay($(this));
-            }
+       
+        $(self.dayScroller).on("click","*", function(e){
+                if(self.dayAdjust === 1){
+                    self.goToDay($(this));
+                }
         });
-        $("#MG_Date_day .scroller").scroll(function() {
+        $(self.dayScroller).scroll(function() {
             self.infiniteScrollDay();
         });
-        $("body").delegate("#MG_Date_month .scroller div","click",function() {
-            if(self.monthAdjust === 1){
-                self.goToMonth($(this));
-            }
+        $(self.monthScroller).on("click","*", function(e){
+                if(self.monthAdjust === 1){
+                    self.goToMonth($(this));
+                }
         });
-        $("#MG_Date_month .scroller").scroll(function() {
+        $(self.monthScroller).scroll(function() {
             self.infiniteScrollMonth();
         });
+        $(self.yearScroller).on("click","*", function(e){
+                if(self.yearAdjust === 1){
+                    self.goToYear($(this));
+                }
+        });
+        $(self.yearScroller).scroll(function() {
+            self.infiniteScrollYear();
+        });
+
+
         $("body").delegate("#MG_Date_year .scroller div","click",function() {
             if(self.yearAdjust === 1){
                 self.goToYear($(this));
@@ -657,12 +676,12 @@ var mgdate = function(element){
         self = this;
         
         if($("#MG_Date_Back").length === 0){
-            var mgDateBack = document.createElement("div");
-            mgDateBack.setAttribute('id', 'MG_Date_Back');
+            self.mgDateBack = document.createElement("div");
+            self.mgDateBack.setAttribute('id', 'MG_Date_Back');
             var mgDateContainer = document.createElement("div");
             mgDateContainer.setAttribute('id', 'MG_Date_Container');
             
-            mgDateBack.appendChild(mgDateContainer);
+            self.mgDateBack.appendChild(mgDateContainer);
             
             var mgDate = document.createElement("div");
             mgDate.setAttribute('id', 'MG_Date');
@@ -676,33 +695,33 @@ var mgdate = function(element){
             celDay.setAttribute('id', 'MG_Date_celday');
             var day = document.createElement("div");
             day.setAttribute('id', 'MG_Date_day');
-            var scroller = document.createElement("div");
-            scroller.className = 'scroller';
+            self.dayScroller = document.createElement("div");
+            self.dayScroller.className = 'scroller';
             mgDate.appendChild(celDay);
             celDay.appendChild(day);
-            day.appendChild(scroller);
+            day.appendChild(self.dayScroller);
             
             var celMonth = document.createElement("div");
             celMonth.setAttribute('id', 'MG_Date_celmonth');
             var month = document.createElement("div");
             month.setAttribute('id', 'MG_Date_month');
-            var scroller2 = document.createElement("div");
-            scroller2.className = 'scroller';
+            self.monthScroller = document.createElement("div");
+            self.monthScroller.className = 'scroller';
             
             mgDate.appendChild(celMonth);
             celMonth.appendChild(month);
-            month.appendChild(scroller2);
+            month.appendChild(self.monthScroller);
             
             var celYear = document.createElement("div");
             celYear.setAttribute('id', 'MG_Date_celyear');
             var year = document.createElement("div");
             year.setAttribute('id', 'MG_Date_year');
-            var scroller3 = document.createElement("div");
-            scroller3.className = 'scroller';
+            self.scrollerYear = document.createElement("div");
+            self.scrollerYear.className = 'scroller';
             
             mgDate.appendChild(celYear);
             celYear.appendChild(year);
-            year.appendChild(scroller3);
+            year.appendChild(self.scrollerYear);
             
             var cover = document.createElement("div");
             cover.setAttribute('id', 'MG_Date_cover');
@@ -731,7 +750,7 @@ var mgdate = function(element){
             mgDateButtons.appendChild(ipCancel);
             mgDateButtons.appendChild(ipSend);
             
-            $("body").append(mgDateBack);
+            $("body").append(self.mgDateBack);
         }
     }
 

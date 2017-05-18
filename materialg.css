@@ -1,3 +1,8 @@
+:root{
+    --colorPositive:#249d78;
+    --colorNegative:#af2930;
+}
+
 html, body{
     height: 100%;
     width: 100%;
@@ -11,12 +16,11 @@ html, body{
     left: 50%;
     height: 100%;
     width: 100%;
-    max-width: 500px;
-    max-height: 400px;
+    max-width: 450px;
+    max-height:400px;
     font-family: Verdana, Arial;
     transform: translate(-50%, -50%);
     background-color: #fff;
-    font-size: 28px;
 }
 #MG_Date_Back{
     position: fixed;
@@ -24,10 +28,11 @@ html, body{
     top: 0;
     left: 0;
     width: 100%;
+
     height: 100%;
-    font-size: 60px;
+    font-size: 30px;
     background-color: rgba(0,0,0,0.7);
-    z-index: 9999;
+    z-index: 999999999999999;
 }
 #MG_Date_Back *{
     box-sizing: border-box;
@@ -49,11 +54,11 @@ html, body{
     background-color: rgba(255,255,255,0.6);
 }
 #MG_Date_cover>div:nth-child(1) {
-
+    
 }
 #MG_Date_cover>div:nth-child(2) {
     height: 20%;
-    border: 1px solid green;
+    border: 1px solid var(--colorPositive);
     background-color: rgba(0,0,0,0);
 }
 #MG_Date_cover>div:nth-child(3) {
@@ -67,7 +72,7 @@ html, body{
     text-align: center;
     height: 75%;
     width: 100%;
-    max-height:600px;
+    max-height:300px;
     margin: 0 auto;
     padding:0;
     font-family: Verdana, Arial;
@@ -109,7 +114,7 @@ html, body{
     padding: 5px 25px 5px 5px;
     text-align: center;
     cursor: pointer;
-
+    
 }
 #MG_Year{
     display: none;
@@ -121,15 +126,16 @@ html, body{
     display: inline-block;
     height: 100%;
     width: 50%;
-    font-size: 28px;
+    font-size: 30px;
     text-align: center;
     border: 0 none transparent;
     cursor: pointer;
 }
 #MG_Date_Back .send{
-    background-color: green;
+    background-color: var(--colorPositive);
     color: #fff;
 }
 #MG_Date_Back .cancel{
-    background-color: #fff;
+    color: #fff;
+    background-color: var(--colorNegative);
 }
