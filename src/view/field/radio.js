@@ -7,6 +7,8 @@ var view = function(name){
   this.title     = '';
   this.value     = '';
   this.container = null;
+  this.title_cont  = CE('span', 'wdl');
+  this.title_label = CE('label', 'item', 'item-input', 'item-stacked-label');
 };
 view.prototype = new Base;
 view.prototype.constructor = view;
@@ -20,14 +22,13 @@ view.prototype.make = function(){
 
   var div = CE('div', 'box');
 
-  var label = CE('label', 'item', 'item-input', 'item-stacked-label');
-  div.append(label);
+  div.append(this.title_label);
 
-  var title = CE('span', 'wdl').text(this.title);
-  label.append(title);
+  this.title_cont.text(this.title);
+  this.title_label.append(this.title_cont);
 
   this.message = CE('span', 'wdl', 'error');
-  label.append(this.message);
+  this.title_label.append(this.message);
 
   this.container = CE('div', 'box');
   this.makeInputs();
