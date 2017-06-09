@@ -1,7 +1,7 @@
-:root{
+/*:root{
     --colorPositive:#249d78;
     --colorNegative:#af2930;
-}
+}*/
 
 html, body{
     height: 100%;
@@ -28,11 +28,10 @@ html, body{
     top: 0;
     left: 0;
     width: 100%;
-
     height: 100%;
-    font-size: 30px;
+    font-size: 25px;
     background-color: rgba(0,0,0,0.7);
-    z-index: 999999999999999;
+    z-index: 9999;
 }
 #MG_Date_Back *{
     box-sizing: border-box;
@@ -58,7 +57,7 @@ html, body{
 }
 #MG_Date_cover>div:nth-child(2) {
     height: 20%;
-    border: 1px solid var(--colorPositive);
+    border: 1px solid #249d78;
     background-color: rgba(0,0,0,0);
 }
 #MG_Date_cover>div:nth-child(3) {
@@ -126,16 +125,16 @@ html, body{
     display: inline-block;
     height: 100%;
     width: 50%;
-    font-size: 30px;
+    font-size: 25px;
     text-align: center;
     border: 0 none transparent;
     cursor: pointer;
 }
 #MG_Date_Back .send{
-    background-color: var(--colorPositive);
+    background-color: #249d78;
     color: #fff;
 }
 #MG_Date_Back .cancel{
     color: #fff;
-    background-color: var(--colorNegative);
+    background-color: #af2930;
 }
