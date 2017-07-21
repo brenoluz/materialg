@@ -29,3 +29,4 @@ base.prototype.val = function(value){
 base.prototype.attr        = function(){ /*for overwrite*/ };
 base.prototype.removeClass = function(){ /*for overwrite*/ };
 base.prototype.makeInputs  = function(){ /*for overwrite*/ };
+base.prototype.onchange    = function(){ /*for overwrite*/ };
