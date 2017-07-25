@@ -42,7 +42,7 @@ var Decorator = function(element, msg) {
                 validator.isValid(value, function(res) {
                     if (!res && msg) {
                         msg.text(validator.msg);
-                        element.addClass('invalid');
+                        if(!!element.addClass) element.addClass('invalid');
                     }
                     def.resolve(res);
                 }, obj);
