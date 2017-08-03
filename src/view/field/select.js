@@ -18,28 +18,13 @@ view.prototype.setTitle = function(title){
   this.title = title;
 };
 
-view.prototype.make = function(){
-
-  this.title_cont.text(this.title);
-  this.title_label.append(this.title_cont);
-
-  this.message = CE('span', 'wdl', 'error');
-  this.title_label.append(this.message);
-
-  this.container = CE('select').attr('name', this.name);
-  this.title_label.append(this.container);
-  this.makeInputs();
-
-  return this.title_label;
-};
-
 view.prototype.makeInputs = function(){
 
   var self = this;
-  this.container.html('');
+  var inputs = this.inputs.html('');
 
   var option = CE('option').css({'display': 'none'}).val('');
-  this.container.append(option);
+  inputs.append(option);
 
   for(var x in this.list){
 

@@ -1,7 +1,11 @@
+var Base = require('./base');
+
 var NotEmpty = function(){
 
     this.msg = 'Campo obrigatório';
 };
+NotEmpty.prototype = new Base;
+NotEmpty.prototype.constructor = NotEmpty;
 module.exports = NotEmpty;
 
 NotEmpty.prototype.isValid = function(value, cb){

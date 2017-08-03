@@ -1,19 +1,46 @@
-var View = require('../view');
+var Base = require('../base');
+var Q    = require('q');
 
-var base = function(){
-
-  this.list      = [];
+var base = function(name){
   this.name      = !!name ? name : '';
-  this.label     = '';
-  this.value     = null;
-  this.container = null;
+  this.container = CE('label', 'item', 'item-input', 'item-stacked-label');
 };
-base.prototype = new View;
+base.prototype = new Base;
 base.prototype.constructor = base;
 module.exports = base;
 
-base.prototype.setLabel = function(label){
-  this.label = label;
+base.prototype.name      = null;
+base.prototype.label     = null;
+base.prototype.inputs    = null;
+base.prototype.title     = null;
+base.prototype.message   = null;
+base.prototype.value     = null;
+
+base.prototype._title    = '';
+
+base.prototype.setTitle = function(title){
+  this._title = title;
+  if(this.title) this.title.text(title);
+};
+
+base.prototype.make = function(){
+
+  this.container.html('');
+  var defer = Q.defer();
+
+  this.title = CE('span', 'wdl');
+  this.title.text(this._title);
+  this.container.append(this.title);
+
+  this.message = CE('span', 'wdl', 'error');
+  this.container.append(this.message);
+
+  this.inputs = CE('div', 'box');
+  this.makeInputs();
+  this.container.append(this.inputs);
+
+  defer.resolve();
+  return defer.promise;
 };
 
 base.prototype.val = function(value){

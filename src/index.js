@@ -1,5 +1,8 @@
 module.exports = {
-  'view':     require('./view/index'),
-  'validate': require('./validate/index'),
-  'plugins':  require('./plugins/index'),
+  'Base':       require('./base'),
+  'Form':       require('./form'),
+  'Controller': require('./controller'),
+  'view':       require('./view/index'),
+  'validate':   require('./validate/index'),
+  'plugins':    require('./plugins/index'),
 };

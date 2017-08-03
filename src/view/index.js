@@ -1,4 +1,4 @@
 module.exports = {
-  'View':   require('./view'),
+  'Base':   require('./base'),
   'field':  require('./field/index'),
 };

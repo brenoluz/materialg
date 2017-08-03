@@ -1,17 +1,18 @@
-var Container = function(){
-  
-  console.log('DEPRECIED!');
+var Base = require('./base');
 
-    this.elements = [];
-};
-module.exports = Container;
+var form = function(){};
+form.prototype = new Base;
+form.prototype.constructor = form;
+module.exports = form;
 
-Container.prototype.append = function(element){
+form.prototype.elements = [];
+
+form.prototype.append = function(element){
 
     this.elements.push(element);
 };
 
-Container.prototype.isValid = function(cb, obj){
+form.prototype.isValid = function(cb, obj){
 
   var promises = [];
   for(var e in this.elements){
@@ -29,7 +30,16 @@ Container.prototype.isValid = function(cb, obj){
   });
 };
 
-Container.prototype.getValues = function(){
+form.prototype.setValues = function(values){
+
+  for(var e in this.elements){
+    var element = this.elements[e];
+    var name    = !!element.name ? element.name : element.attr('name');
+    if(!!name && values.hasOwnProperty(name)) element.val(values[name]);
+  }
+};
+
+form.prototype.getValues = function(){
 
   var values = {};
   for(var e in this.elements){
