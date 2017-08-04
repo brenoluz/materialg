@@ -4,19 +4,22 @@ var Q    = require('q');
 var base = function(name){
   this.name      = !!name ? name : '';
   this.container = CE('label', 'item', 'item-input', 'item-stacked-label');
+
+	this.name      = null;
+	this.label     = null;
+	this.inputs    = null;
+	this.title     = null;
+	this.message   = null;
+	this.value     = '';
+
+  this.pre_make  = [];
+  this.pos_make  = [];
+
+  this._title    = '';
 };
 base.prototype = new Base;
 base.prototype.constructor = base;
 module.exports = base;
-
-base.prototype.name      = null;
-base.prototype.label     = null;
-base.prototype.inputs    = null;
-base.prototype.title     = null;
-base.prototype.message   = null;
-base.prototype.value     = null;
-
-base.prototype._title    = '';
 
 base.prototype.setTitle = function(title){
   this._title = title;

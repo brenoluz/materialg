@@ -1,4 +1,5 @@
 var Base = require('./base');
+var Q    = require('q');
 
 var view = function(name){
   this.name      = !!name ? name : '';
@@ -10,8 +11,8 @@ module.exports = view;
 
 view.prototype.make = function(){
 
-  this.container.html('');
   var defer = Q.defer();
+  this.container.html('');
 
   this.title = CE('span', 'wdl');
   this.title.text(this._title);
@@ -30,7 +31,8 @@ view.prototype.make = function(){
 
 view.prototype.makeInputs = function(){
   
-  var div   = this.inputs.html('');
+  this.inputs.html('');
+  var div   = this.inputs;
  
   var day   = CE('input', 'wdl').attr({'type': 'number', maxlength: "2", max: "31", min: "1",});
   var month = CE('input', 'wdl').attr({'type': 'number', maxlength: "2", max: "12", min: "1",});

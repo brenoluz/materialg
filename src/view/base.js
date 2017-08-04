@@ -15,11 +15,12 @@ var base = function(C){
 
   this.C = C; //Controller
   this.container = CE('div', 'box');
+
+  this.pre_make = [];
+  this.pos_make = [];
 };
 base.prototype = new Base;
 base.prototype.constructor = base;
-base.prototype.pre_make    = [];
-base.prototype.pos_make    = [];
 
 base.prototype.toString = function(){
   return this.render();
@@ -38,8 +39,12 @@ base.prototype.render = function(){
 
     for(var k in self.pos_make){
       var pos_function = self.pos_make[k];
-      var resp = pos_function.call(self);
-      if(typeof(resp) == 'object') pos_promises.push(resp);
+      (function(func, ctx){ 
+
+        var resp = func.call(ctx);
+        if(typeof(resp) == 'object') pos_promises.push(resp);
+      
+      })(pos_function, self);
     }
 
     Q.all(pos_promises).then(function(){
