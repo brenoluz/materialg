@@ -8,19 +8,20 @@ var Decorator = function(element, msg) {
     if(!element.name) element.name = element.attr('name');
 
     element.addValidator = function(validator){
-        this.validators.push(validator);
+        element.validators.push(validator);
     };
 
     element.addFilter = function(filter){
-        this.filter.push(filter);
+        element.filter.push(filter);
     };
 
     element.getValue = function(){
 
-        var value = this.val().trim();
-        for(var f in this.filters){
+        var value = element.val().trim();
+        console.log(value, element.name);
+        for(var f in element.filters){
 
-          var filter = this.filters[f];
+          var filter = element.filters[f];
           var value  = filter.filter(value);
         }
 
@@ -29,15 +30,15 @@ var Decorator = function(element, msg) {
 
     element.isValid = function(cb, obj) {
 
-        var self = this;
+        var self = element;
         var res = true;
         var promises = [];
-        var value = this.getValue();
+        var value = element.getValue();
         if (msg) msg.text('');
         element.removeClass('invalid');
 
-        for(var v in this.validators){
-            var validator = this.validators[v];
+        for(var v in element.validators){
+            var validator = element.validators[v];
             var def = new $.Deferred(function(def) {
                 validator.isValid(value, function(res) {
                     if (!res && msg) {

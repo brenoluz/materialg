@@ -23,7 +23,7 @@ base.prototype = new Base;
 base.prototype.constructor = base;
 
 base.prototype.toString = function(){
-  return this.render();
+  return this.container.html();
 };
 
 base.prototype.render = function(){

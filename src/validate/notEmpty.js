@@ -10,7 +10,7 @@ module.exports = NotEmpty;
 
 NotEmpty.prototype.isValid = function(value, cb){
 
-    var value = value.trim();
+    var value = typeof(value) == 'string' ? value.trim() : value;
     if(value === null || value == undefined || value == ''){
         return cb(false);
     }

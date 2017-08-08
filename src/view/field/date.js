@@ -30,31 +30,49 @@ view.prototype.make = function(){
 };
 
 view.prototype.makeInputs = function(){
+
+  var self  = this;
   
+  this.inputs.off('focusout');
   this.inputs.html('');
-  var div   = this.inputs;
  
   var day   = CE('input', 'wdl').attr({'type': 'number', maxlength: "2", max: "31", min: "1",});
   var month = CE('input', 'wdl').attr({'type': 'number', maxlength: "2", max: "12", min: "1",});
   var year  = CE('input', 'wdl').attr({'type': 'number', maxlength: "4", max: "9999", min: "1",});
 
-  div.append(day);
-  div.append(CE('span', 'wdl').text('/'));
-  div.append(month);
-  div.append(CE('span', 'wdl').text('/'));
-  div.append(year);
+  this.inputs.append(day);
+  this.inputs.append(CE('span', 'wdl').text('/'));
+  this.inputs.append(month);
+  this.inputs.append(CE('span', 'wdl').text('/'));
+  this.inputs.append(year);
 
   day.keyup(function(e){
   
     var value = day.val();
     if(value.length > 1) month.focus();
+
+  }).focusout(function(e){
+  
+    var value = day.val().trim();
+    if(value == '0') return day.val('');
+    if(value.length == 1){
+      day.val('0' + value);
+    }
   });
 
   month.keyup(function(e){
   
-    var value = month.val();
+    var value = month.val().trim();
     if(value.length > 1) return year.focus();
     if(value.length === 0) return day.focus().select();
+
+  }).focusout(function(e){
+  
+    var value = month.val().trim();
+    if(value == '0') return month.val('');
+    if(value.length == 1){
+      month.val('0' + value);
+    }
   });
 
   year.keyup(function(e){
@@ -64,10 +82,23 @@ view.prototype.makeInputs = function(){
     if(value.length === 0) return month.focus().select();
   });
 
-  div.focusout(function(e){
+  if(!!this.value){
+    
+    if(this.value instanceof Date){
+      day.val(this.value.getDate());
+      day.trigger('focusout');
 
-    var self = this;
-  
+      month.val(this.value.getMonth() + 1);
+      month.trigger('focusout');
+
+      year.val(this.value.getFullYear());
+      year.trigger('focusout');
+    }
+  };
+
+  this.inputs.on('focusout', function(e){
+
+    var $this   = $(this);
     var v_day   = day.val();
     var v_month = month.val();
     var v_year  = year.val();
@@ -78,20 +109,22 @@ view.prototype.makeInputs = function(){
       var check = date.getFullYear() == v_year && date.getMonth() + 1 == v_month && date.getDate() == v_day;
       if(check){
         self.value = date;
-        div.removeClass('wrong');
+        self.inputs.removeClass('wrong');
       }else{
-        self.value = null;
-        div.addClass('wrong');
+        self.value = '';
+        self.inputs.addClass('wrong');
       }
     }
   });
 
-  div.find('input').on('change', function(e){
-    var self = $(this);
-    var value = self.val();
-    var max = self.attr('maxlength');
-    if(self.val() > max){
-        self.val(value.substring(0, max));
+  self.inputs.find('input').on('change', function(e){
+
+    var that  = $(this);
+    
+    var value = that.val().trim();
+    var max   = that.attr('maxlength');
+    if(value.length > max){
+        that.val(value.substring(0, max));
     }
   });
 };

@@ -8,8 +8,9 @@ var controller = function(params){
 };
 controller.prototype = new Base;
 controller.prototype.constructor = controller;
-module.exports = controller;
 
 controller.prototype.make = function(){
   return this.view.render();
 };
+
+module.exports = controller;

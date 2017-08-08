@@ -1,30 +1,45 @@
 var Base = require('./base');
+var Q    = require('q');
 
 var view = function(name){
 
   this.list      = [];
   this.name      = !!name ? name : '';
-  this.title     = '';
-  this.value     = '';
-  this.container = null;
-  this.title_cont  = CE('span', 'wdl');
-  this.title_label = CE('label', 'item', 'item-select');
+  this.container = CE('label', 'item', 'item-select');
 };
 view.prototype = new Base;
 view.prototype.constructor = view;
 module.exports = view;
 
-view.prototype.setTitle = function(title){
-  this.title = title;
+view.prototype.make = function(){
+
+  this.container.html('');
+  var defer = Q.defer();
+
+  this.title = CE('span', 'wdl');
+  this.title.text(this._title);
+  this.container.append(this.title);
+
+  this.message = CE('span', 'wdl', 'error');
+  this.container.append(this.message);
+
+  this.inputs = CE('select');
+  this.makeInputs();
+  this.container.append(this.inputs);
+
+  defer.resolve();
+  return defer.promise;
 };
 
 view.prototype.makeInputs = function(){
 
   var self = this;
-  var inputs = this.inputs.html('');
 
+  this.inputs.html('');
+  this.inputs.off('change');
+  
   var option = CE('option').css({'display': 'none'}).val('');
-  inputs.append(option);
+  this.inputs.append(option);
 
   for(var x in this.list){
 
@@ -33,12 +48,12 @@ view.prototype.makeInputs = function(){
 
     var option = CE('option').val(key).text(label);
     option.css({float: 'right', width: '30px', height: '2em', border: '0px'});
-    this.container.append(option);
+    this.inputs.append(option);
 
     if(this.value == key) option.attr('selected', 'selected');
   }
 
-  this.container.change(function(){ self.value = self.container.find(':selected').val(); self.onchange.call(self, self.value); });
+  this.inputs.on('change', function(){ self.value = self.container.find(':selected').val(); self.onchange.call(self, self.value); });
 };
 
 view.prototype.add = function(key, label){

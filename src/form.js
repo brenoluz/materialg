@@ -1,4 +1,5 @@
 var Base = require('./base');
+var Q    = require('q');
 
 var form = function(){};
 form.prototype = new Base;
@@ -16,17 +17,16 @@ form.prototype.isValid = function(cb, obj){
 
   var promises = [];
   for(var e in this.elements){
-      var element = this.elements[e];
-      var def = new $.Deferred(function(def){
-          element.isValid(function(res){ def.resolve(res); }, obj);
-      });
-      promises.push(def);
+    var element = this.elements[e];
+    var def = Q.defer();
+    element.isValid(def.resolve, obj);
+    promises.push(def.promise);
   }
 
-  $.when.apply(undefined, promises).promise().done(function(){
+  Q.all(promises).then(function(data){
 
-      var args = Array.prototype.slice.call(arguments);
-      cb(args.indexOf(false) < 0);
+    var args = Array.prototype.slice.call(data);
+    cb(args.indexOf(false) < 0);
   });
 };
 
