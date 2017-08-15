@@ -27,10 +27,6 @@ base.prototype.constructor = base;
 module.exports = base;
 
 base.prototype.addValidator = function(validator){
-  if(this.name == 'sus_card'){
-    var a = new Error();
-    console.log(a);
-  }
   this.validators.push(validator);
 };
 
@@ -68,8 +64,6 @@ base.prototype.isValid = function(cb, obj) {
     var validator = this.validators[v];
     var def = Q.defer();
     (function($validator, $def, $obj){
-
-      console.log(self.name, self.validators);
       $validator.isValid(value, function(res) {
         if(!res){
           self.message.text($validator.msg);
