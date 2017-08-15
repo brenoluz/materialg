@@ -2,11 +2,8 @@ var Base = require('./base');
 
 var view = function(name){
 
+  Base.call(this, name);
   this.list      = [];
-  this.name      = !!name ? name : '';
-  this.title     = '';
-  this.value     = '';
-  this.container = null;
   this.sequence  = 0;
 };
 view.prototype = new Base;

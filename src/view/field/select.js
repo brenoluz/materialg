@@ -3,8 +3,8 @@ var Q    = require('q');
 
 var view = function(name){
 
+  Base.call(this, name);
   this.list      = [];
-  this.name      = !!name ? name : '';
   this.container = CE('label', 'item', 'item-select');
 };
 view.prototype = new Base;

@@ -1,12 +1,13 @@
 var Base = require('./base');
 var Q    = require('q');
 
-var form = function(){};
+var form = function(){
+  
+  this.elements = [];
+};
 form.prototype = new Base;
 form.prototype.constructor = form;
 module.exports = form;
-
-form.prototype.elements = [];
 
 form.prototype.append = function(element){
 
@@ -19,7 +20,9 @@ form.prototype.isValid = function(cb, obj){
   for(var e in this.elements){
     var element = this.elements[e];
     var def = Q.defer();
-    element.isValid(def.resolve, obj);
+    (function(elem, deff, o){
+      elem.isValid(deff.resolve, o);
+    })(element, def, obj);
     promises.push(def.promise);
   }
 

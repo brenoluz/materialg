@@ -12,6 +12,8 @@ var CE = function(tag){
 window.CE = CE;
 
 var base = function(C){
+  
+  Base.call(this);
 
   this.C = C; //Controller
   this.container = CE('div', 'box');
@@ -49,17 +51,17 @@ base.prototype.render = function(){
 
     Q.all(pos_promises).then(function(){
       defer.resolve(self.container);
-    });
+    }, console.log).done();
   }
 
-  var onpre = function(){ self.make().then(onmake); };
+  var onpre = function(){ self.make().then(onmake, console.log).done(); };
 
   for(var k in this.pre_make){
     var pre_function = this.pre_make[k];
     var resp = pre_function.call(self);
     if(typeof(resp) == 'object') pre_promises.push(resp);
   }
-  Q.all(pre_promises).then(onpre);
+  Q.all(pre_promises).then(onpre, console.log).done();
 
   return defer.promise;
 };

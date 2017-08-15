@@ -18,7 +18,6 @@ var Decorator = function(element, msg) {
     element.getValue = function(){
 
         var value = element.val().trim();
-        console.log(value, element.name);
         for(var f in element.filters){
 
           var filter = element.filters[f];

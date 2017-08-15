@@ -2,8 +2,8 @@ var Base = require('./base');
 var Q    = require('q');
 
 var view = function(name){
-  this.name      = !!name ? name : '';
-  this.container = CE('label', 'item', 'item-input', 'item-stacked-label');
+
+  Base.call(this, name);
 };
 view.prototype = new Base;
 view.prototype.constructor = view;

@@ -2,10 +2,12 @@ var Base = require('../base');
 var Q    = require('q');
 
 var base = function(name){
+
+  Base.call(this);
+
   this.name      = !!name ? name : '';
   this.container = CE('label', 'item', 'item-input', 'item-stacked-label');
 
-	this.name      = null;
 	this.label     = null;
 	this.inputs    = null;
 	this.title     = null;
@@ -25,6 +27,10 @@ base.prototype.constructor = base;
 module.exports = base;
 
 base.prototype.addValidator = function(validator){
+  if(this.name == 'sus_card'){
+    var a = new Error();
+    console.log(a);
+  }
   this.validators.push(validator);
 };
 
@@ -61,13 +67,18 @@ base.prototype.isValid = function(cb, obj) {
   for(var v in this.validators){
     var validator = this.validators[v];
     var def = Q.defer();
-    validator.isValid(value, function(res) {
-      if(!res){
-        self.message.text(validator.msg);
-        self.container.addClass('invalid');
-      }
-      def.resolve(res);
-    }, obj);
+    (function($validator, $def, $obj){
+
+      console.log(self.name, self.validators);
+      $validator.isValid(value, function(res) {
+        if(!res){
+          self.message.text($validator.msg);
+          self.container.addClass('invalid');
+        }
+        $def.resolve(res);
+      }, $obj);
+    
+    })(validator, def);
     promises.push(def.promise);
   }
 
