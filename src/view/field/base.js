@@ -50,6 +50,8 @@ base.prototype.getValue = function(){
   return value;
 };
 
+base.prototype.onisvalid = function(res){};
+
 base.prototype.isValid = function(cb, obj) {
 
   var self = this;
@@ -80,8 +82,10 @@ base.prototype.isValid = function(cb, obj) {
    
     var args = Array.prototype.slice.call(data);
     if (args.indexOf(false) >= 0) {
+      self.onisvalid(false);
       cb(false);
     }else{
+      self.onisvalid(true);
       cb(true);
     }
   });

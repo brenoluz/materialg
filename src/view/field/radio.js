@@ -1,13 +1,39 @@
 var Base = require('./base');
+var Q    = require('q');
 
 var view = function(name){
 
   Base.call(this, name);
   this.list = [];
+
+  this.container = CE('div', 'box');
 };
 view.prototype = new Base;
 view.prototype.constructor = view;
 module.exports = view;
+
+view.prototype.make = function(){
+
+  var defer = Q.defer();
+  this.container.html('');
+
+  this.label = CE('label', 'item');
+  this.container.append(this.label);
+
+  this.title = CE('span', 'wdl');
+  this.title.text(this._title);
+  this.label.append(this.title);
+
+  this.message = CE('span', 'wdl', 'error');
+  this.label.append(this.message);
+
+  this.inputs = CE('div', 'box');
+  this.container.append(this.inputs);
+  this.makeInputs();
+
+  defer.resolve();
+  return defer.promise;
+};
 
 view.prototype.makeInputs = function(){
 
@@ -21,7 +47,6 @@ view.prototype.makeInputs = function(){
 
     var input = CE('input').attr({type: 'radio', name: this.name, value: key});
     input.css({float: 'right', width: '30px', height: '2em', border: '0px'});
-    console.log('aqui', this.inputs);
     this.inputs.append(CE('label', 'item').text(label).append(input));
 
     if(this.value == key) input.attr('checked', 'checked');

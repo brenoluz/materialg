@@ -36,9 +36,9 @@ view.prototype.makeInputs = function(){
   this.inputs.off('focusout');
   this.inputs.html('');
  
-  var day   = CE('input', 'wdl').attr({'type': 'number', maxlength: "2", max: "31", min: "1",});
-  var month = CE('input', 'wdl').attr({'type': 'number', maxlength: "2", max: "12", min: "1",});
-  var year  = CE('input', 'wdl').attr({'type': 'number', maxlength: "4", max: "9999", min: "1",});
+  var day   = CE('input', 'wdl').attr({'type': 'number', maxlength: "2", max: "31", min: "1", placeholder: 'dd'});
+  var month = CE('input', 'wdl').attr({'type': 'number', maxlength: "2", max: "12", min: "1", placeholder: 'mm'});
+  var year  = CE('input', 'wdl').attr({'type': 'number', maxlength: "4", max: "9999", min: "1", placeholder: 'aaaa'});
 
   this.inputs.append(day);
   this.inputs.append(CE('span', 'wdl').text('/'));
@@ -96,25 +96,28 @@ view.prototype.makeInputs = function(){
     }
   };
 
-  this.inputs.on('focusout', function(e){
+  this.inputs.on('keyup', function(e){
 
     var $this   = $(this);
-    var v_day   = day.val();
-    var v_month = month.val();
-    var v_year  = year.val();
+    var v_day   = day.val().trim();
+    var v_month = month.val().trim();
+    var v_year  = year.val().trim();
+
+    if(v_year.length != 4) v_year = '';
 
     if(v_day !== '' && v_month !== '' && year !== ''){
-    
+
       var date = new Date(v_year, v_month - 1, v_day);
       var check = date.getFullYear() == v_year && date.getMonth() + 1 == v_month && date.getDate() == v_day;
       if(check){
         self.value = date;
         self.inputs.removeClass('wrong');
-      }else{
-        self.value = '';
-        self.inputs.addClass('wrong');
+        return;
       }
     }
+
+    self.value = '';
+    self.inputs.addClass('wrong');
   });
 
   self.inputs.find('input').on('change', function(e){

@@ -4,8 +4,8 @@
   "description": "UI Javascript Library",
   "main": "materialg.js",
   "scripts": {
-    "debug": "browserify src/index.js --debug --standalone materialg > materialg.js",
-    "build": "browserify src/index.js --standalone materialg | uglifyjs > materialg.js"
+    "debug": "./node_modules/browserify/bin/cmd.js src/index.js --debug --standalone materialg > materialg.js",
+    "build": "./node_modules/browserify/bin/cmd.js src/index.js --standalone materialg | ./node_modules/uglify-js/bin/uglifyjs > materialg.js"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,10 @@
     "url": "https://github.com/marxluz/materialg/issues"
   },
   "homepage": "https://github.com/marxluz/materialg#readme",
-  "dependencies": {},
+  "dependencies": {
+    "browserify": "^14.4.0",
+    "q": "^1.5.0"
+  },
   "devDependencies": {
     "browserfy": "^1.0.0",
     "uglify-js": "^2.8.14"
