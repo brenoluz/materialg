@@ -1,0 +1,66 @@
+var Base = require('./base');
+var back = require('../../back');
+var Q    = require('q');
+
+var dialog = function(){
+
+  Base.call(this);
+
+  this.MODAL_PRIORITY = back.DIALOG;
+  this.container = CE('div', 'popup-container popup-showing active');
+  this.container.css({'background-color': 'rgba(0, 0, 0, 0.4)'});
+
+  this._title  = '';
+  this._body   = '';
+  this.buttons = [];
+};
+dialog.prototype = new Base;
+dialog.prototype.constructor = dialog;
+module.exports = dialog;
+
+dialog.prototype.setTitle = function(title){
+
+  this._title = title;
+};
+
+dialog.prototype.setBody = function(body){
+
+  this._body = body;
+};
+
+dialog.prototype.addButton = function(button){
+
+  var self = this;
+  button.click(function(){ self.remove.call(self) });
+  this.buttons.push(button);
+};
+
+dialog.prototype.make = function(){
+
+  var self = this;
+  var def  = Q.defer();
+
+  back.add(this.MODAL_PRIORITY, function(){ self.back.call(self); });
+
+  var popup = CE('div', 'popup').css({'background-color': '#fff'});
+  this.container.append(popup);
+
+  var head = CE('div', 'popup-head');
+  popup.append(head);
+  head.append(CE('h3', 'popup-title').text(this._title));
+
+  var body = CE('div', 'popup-body');
+  popup.append(body);
+  body.append(CE('span').text(this._body));
+
+  if(!!this.buttons.length){
+  
+    var buttons = CE('div', 'popup-buttons');
+    popup.append(buttons);
+    for(var b in this.buttons) buttons.append(this.buttons[b]);
+  }
+
+  def.resolve();
+  return def.promise;
+};
+

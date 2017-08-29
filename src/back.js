@@ -32,7 +32,6 @@ back.prototype.override = function(cb){
 back.prototype.run = function(){
 
   var call = this.default;
-  console.log(this.default);
   
   //9 is max priority
   for(var i = 0; i < 10; i++){

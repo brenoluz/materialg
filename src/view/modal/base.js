@@ -5,7 +5,9 @@ var Q    = require('q');
 var base = function(){
 
   Base.call(this);
-  this.container = CE('div', 'modal-backdrop active');
+
+  this.MODAL_PRIORITY = back.MODAL;
+  this.container      = CE('div', 'modal-backdrop active');
 };
 base.prototype = new Base;
 base.prototype.constructor = base;
@@ -22,7 +24,7 @@ base.prototype.make = function(){
   this.modal = CE('div', 'modal slide-in-left');
   wrapper.append(this.modal);
 
-  back.add(back.MODAL, function(){ self.back.call(self); });
+  back.add(this.MODAL_PRIORITY, function(){ self.back.call(self); });
 
   defer.resolve();
   return defer.promise;
@@ -43,7 +45,7 @@ base.prototype.show = function(){
 
 base.prototype.remove = function(){
 
-  back.remove(back.MODAL);
+  back.remove(this.MODAL_PRIORITY);
   this.container.remove();
 };
 
