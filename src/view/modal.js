@@ -5,7 +5,8 @@ var modal = function(){
 
   Base.call(this);
 
-  this._title = '';
+  this._title        = '';
+  this._body         = null;
   this._left_button  = null;
   this._right_button = null;
 };
@@ -42,7 +43,6 @@ modal.prototype.make = function(){
   Base.prototype.make.call(this).then(function(){
   
     var hasHeader = !!self._title || !!self._left_button || !!self._right_button;
-    console.log(hasHeader);
     if(hasHeader){
       var header = CE('div', 'bar bar-header');
       self.modal.append(header);
@@ -61,7 +61,7 @@ modal.prototype.make = function(){
     var content = CE('div', 'scroll-content ionic-scroll overflow-scroll');
     if(hasHeader) content.addClass('has-header');
     self.modal.append(content);
-    content.append(self.body);
+    content.append(self._body);
 
     def.resolve();
   });
