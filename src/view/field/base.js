@@ -21,10 +21,17 @@ var base = function(name){
   this.filters    = [];
 
   this._title    = '';
+  this._edit     = false;
 };
 base.prototype = new Base;
 base.prototype.constructor = base;
 module.exports = base;
+
+base.prototype.edit = function(flag){
+   
+  this._edit = flag;
+  return this.render();
+};
 
 base.prototype.addValidator = function(validator){
   this.validators.push(validator);
@@ -104,12 +111,17 @@ base.prototype.make = function(){
   this.container.append(this.message);
 
   this.inputs = CE('div', 'box');
-  this.makeInputs();
+  if(this._edit){
+    this.makeInputs();
+  }else{
+    this.makeShow();
+  }
   this.container.append(this.inputs);
 
   defer.resolve();
   return defer.promise;
 };
+
 
 base.prototype.val = function(value){
 
@@ -117,11 +129,16 @@ base.prototype.val = function(value){
     return this.value;
   }else{
     this.value = value;
-    this.makeInputs();
+    if(this._edit){
+      this.makeInputs();
+    }else{
+      this.makeShow();
+    }
   }
 };
 
 base.prototype.attr        = function(){ /*for overwrite*/ };
 base.prototype.removeClass = function(){ /*for overwrite*/ };
 base.prototype.makeInputs  = function(){ /*for overwrite*/ };
+base.prototype.makeShow    = function(){ /*for overwrite*/ };
 base.prototype.onchange    = function(){ /*for overwrite*/ };
