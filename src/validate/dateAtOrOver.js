@@ -12,6 +12,8 @@ module.exports = dateAtOrOver;
 dateAtOrOver.prototype.isValid = function(value, cb){
 
   var value = value instanceof Date ? value : new Date(value.split('-'));
-  if(value.getTime() < this.date.getTime()) return cb(false);
-  cb(true);
+  var clone = new Date(this.date);
+  clone.setDate(clone.getDate() - 1)
+  if(value.getTime() > clone.getTime()) return cb(true);
+  cb(false);
 };

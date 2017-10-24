@@ -14,6 +14,7 @@ view.prototype.makeInputs = function(){
   this.inputs.html('');
   var input = CE('input').attr({'type': 'text', name: this.name});
   if(!!this.value) input.val(this.value);
+  if(!this._edit)  input.attr('disabled', 'disabled');
   input.keyup(function(e){ self.value = input.val(); });
   this.inputs.append(input);
 }

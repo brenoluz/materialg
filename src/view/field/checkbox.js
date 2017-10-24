@@ -25,12 +25,8 @@ view.prototype.make = function(){
   this.message = CE('span', 'wdl', 'error');
 
   this.inputs = CE('span', 'item-checkbox');
-  if(this._edit){
-    this.makeInputs();
-  }else{
-
-  }
   this.container.append(this.inputs);
+  this.makeInputs();
 
   defer.resolve();
   return defer.promise;
@@ -54,7 +50,7 @@ view.prototype.makeInputs = function(){
     label.append(input);
   }else{
    
-    var span = CE('span', 'material-icons');
+    var span = CE('span', 'material-icons wdr');
     if(value) span.html('&#xE5CA;');
     label.append(span);
   }

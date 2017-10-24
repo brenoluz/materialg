@@ -14,6 +14,10 @@ back.prototype.add = function(priority, cb){
   this.list[priority] = cb;
 };
 
+back.prototype.clear = function(){
+  this.list = {};
+}
+
 back.prototype.setDefault = function(cb){
 
   this.default = cb;

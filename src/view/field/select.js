@@ -24,8 +24,11 @@ view.prototype.make = function(){
   this.container.append(this.message);
 
   this.inputs = CE('select');
+  if(!this._edit)  this.inputs.attr('disabled', 'disabled');
   this.makeInputs();
   this.container.append(this.inputs);
+
+  this._make = true;
 
   defer.resolve();
   return defer.promise;

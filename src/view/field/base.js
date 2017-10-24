@@ -21,7 +21,8 @@ var base = function(name){
   this.filters    = [];
 
   this._title    = '';
-  this._edit     = false;
+  this._edit     = true;
+  this._make     = false;
 };
 base.prototype = new Base;
 base.prototype.constructor = base;
@@ -98,8 +99,26 @@ base.prototype.isValid = function(cb, obj) {
   });
 };
 
-base.prototype.make = function(){
+base.prototype.makeShow = function(){
 
+  var self = this;
+  this.inputs.html('');
+
+  var value = !!this.value ? this.value : '---';
+
+  if(value instanceof Date){
+    value = value.getDisplay();
+  }
+
+  var span = CE('span', 'input_area');
+  span.css({'paddin-top': '6px'});
+  span.text(value);
+
+  this.inputs.append(span);
+};
+
+base.prototype.make = function(){
+  
   this.container.html('');
   var defer = Q.defer();
 
@@ -111,17 +130,14 @@ base.prototype.make = function(){
   this.container.append(this.message);
 
   this.inputs = CE('div', 'box');
-  if(this._edit){
-    this.makeInputs();
-  }else{
-    this.makeShow();
-  }
+  this.makeInputs();
   this.container.append(this.inputs);
+
+  this._make = true;
 
   defer.resolve();
   return defer.promise;
 };
-
 
 base.prototype.val = function(value){
 
@@ -129,16 +145,11 @@ base.prototype.val = function(value){
     return this.value;
   }else{
     this.value = value;
-    if(this._edit){
-      this.makeInputs();
-    }else{
-      this.makeShow();
-    }
+    if(this._make) this.makeInputs();
   }
 };
 
 base.prototype.attr        = function(){ /*for overwrite*/ };
 base.prototype.removeClass = function(){ /*for overwrite*/ };
 base.prototype.makeInputs  = function(){ /*for overwrite*/ };
-base.prototype.makeShow    = function(){ /*for overwrite*/ };
 base.prototype.onchange    = function(){ /*for overwrite*/ };

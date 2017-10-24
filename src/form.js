@@ -86,7 +86,8 @@ form.prototype.getValues = function(){
   for(var e in this.elements){
     var element = this.elements[e];
     var name    = !!element.name ? element.name : element.attr('name');
-    if(!!name)  values[name] = element.getValue();
+    var value   = element.getValue();
+    if(!!name)  values[name] = typeof value == 'string' ? value.trim() : value;
   }
 
   return values;

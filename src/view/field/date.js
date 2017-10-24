@@ -25,6 +25,8 @@ view.prototype.make = function(){
   this.makeInputs();
   this.container.append(this.inputs);
 
+  this._make = true;
+
   defer.resolve();
   return defer.promise;
 };
@@ -39,6 +41,12 @@ view.prototype.makeInputs = function(){
   var day   = CE('input', 'wdl').attr({'type': 'number', maxlength: "2", max: "31", min: "1", placeholder: 'dd'});
   var month = CE('input', 'wdl').attr({'type': 'number', maxlength: "2", max: "12", min: "1", placeholder: 'mm'});
   var year  = CE('input', 'wdl').attr({'type': 'number', maxlength: "4", max: "9999", min: "1", placeholder: 'aaaa'});
+
+  if(!this._edit){
+    day.attr('disabled', 'disabled');
+    month.attr('disabled', 'disabled');
+    year.attr('disabled', 'disabled');
+  }
 
   this.inputs.append(day);
   this.inputs.append(CE('span', 'wdl').text('/'));
@@ -104,6 +112,7 @@ view.prototype.makeInputs = function(){
     var v_year  = year.val().trim();
 
     if(v_year.length != 4) v_year = '';
+    console.log(v_day, v_month, v_year);
 
     if(v_day !== '' && v_month !== '' && year !== ''){
 

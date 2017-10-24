@@ -6,4 +6,6 @@ module.exports = {
   'NotEmptyDependent': require('./notEmptyDependent'),
   'DateAtOrBelow':     require('./dateAtOrBelow'),
   'DateAtOrOver':      require('./dateAtOrOver'),
+  'AtOrBelow':         require('./AtOrBelow'),
+  'AtOrOver':          require('./AtOrOver'),
 };
