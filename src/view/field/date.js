@@ -112,8 +112,6 @@ view.prototype.makeInputs = function(){
     var v_year  = year.val().trim();
 
     if(v_year.length != 4) v_year = '';
-    console.log(v_day, v_month, v_year);
-
     if(v_day !== '' && v_month !== '' && year !== ''){
 
       var date = new Date(v_year, v_month - 1, v_day);

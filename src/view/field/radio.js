@@ -31,6 +31,8 @@ view.prototype.make = function(){
   this.container.append(this.inputs);
   this.makeInputs();
 
+  this._make = true;
+
   defer.resolve();
   return defer.promise;
 };
@@ -46,6 +48,7 @@ view.prototype.makeInputs = function(){
     var label = this.list[x][1];
 
     var input = CE('input').attr({type: 'radio', name: this.name, value: key});
+    if(!this._edit) input.attr('disabled', 'disabled');
     input.css({float: 'right', width: '30px', height: '2em', border: '0px'});
     this.inputs.append(CE('label', 'item').text(label).append(input));
 
