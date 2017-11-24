@@ -45,9 +45,11 @@ dialog.prototype.make = function(){
   var popup = CE('div', 'popup').css({'background-color': '#fff'});
   this.container.append(popup);
 
-  var head = CE('div', 'popup-head');
-  popup.append(head);
-  head.append(CE('h3', 'popup-title').text(this._title));
+  if(!!this._title){
+    var head = CE('div', 'popup-head');
+    popup.append(head);
+    head.append(CE('h3', 'popup-title').text(this._title));
+  }
 
   var body = CE('div', 'popup-body');
   popup.append(body);

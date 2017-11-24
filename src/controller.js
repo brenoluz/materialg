@@ -15,4 +15,6 @@ controller.prototype.make = function(){
   return this.view.render();
 };
 
+controller.prototype.destroy = function(){ /* For extend */  };
+
 module.exports = controller;

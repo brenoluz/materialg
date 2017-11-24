@@ -9,3 +9,4 @@ base.prototype.make = function(){
   def.resolve();
   return def.promise;
 };
+

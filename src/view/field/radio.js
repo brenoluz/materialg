@@ -12,31 +12,6 @@ view.prototype = new Base;
 view.prototype.constructor = view;
 module.exports = view;
 
-view.prototype.make = function(){
-
-  var defer = Q.defer();
-  this.container.html('');
-
-  this.label = CE('label', 'item');
-  this.container.append(this.label);
-
-  this.title = CE('span', 'wdl');
-  this.title.text(this._title);
-  this.label.append(this.title);
-
-  this.message = CE('span', 'wdl', 'error');
-  this.label.append(this.message);
-
-  this.inputs = CE('div', 'box');
-  this.container.append(this.inputs);
-  this.makeInputs();
-
-  this._make = true;
-
-  defer.resolve();
-  return defer.promise;
-};
-
 view.prototype.makeInputs = function(){
 
   var self = this;
@@ -55,7 +30,7 @@ view.prototype.makeInputs = function(){
     if(this.value == key) input.attr('checked', 'checked');
   }
 
-  this.inputs.change(function(){ self.value = self.container.find(':checked').val(); });
+  this.inputs.change(function(e){ self.value = self.container.find(':checked').val(); self.onchange.call(self, e); });
 };
 
 view.prototype.add = function(key, label){

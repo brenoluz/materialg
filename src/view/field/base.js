@@ -23,6 +23,8 @@ var base = function(name){
   this._title    = '';
   this._edit     = true;
   this._make     = false;
+
+  this.forced    = null;
 };
 base.prototype = new Base;
 base.prototype.constructor = base;
@@ -31,7 +33,7 @@ module.exports = base;
 base.prototype.edit = function(flag){
    
   this._edit = flag;
-  return this.render();
+  //return this.render();
 };
 
 base.prototype.addValidator = function(validator){
@@ -60,6 +62,16 @@ base.prototype.getValue = function(){
 
 base.prototype.onisvalid = function(res){};
 
+base.prototype.forceValid = function(res, message){
+
+  if(res == null){
+    this.forced = null;
+    return;
+  }
+
+  this.forced = [res, message];
+};
+
 base.prototype.isValid = function(cb, obj) {
 
   var self = this;
@@ -69,6 +81,12 @@ base.prototype.isValid = function(cb, obj) {
 
   self.message.text('');
   this.container.removeClass('invalid');
+
+  if(!!this.forced){
+    this.message.text(this.forced[1]);
+    this.container.addClass('invalid');
+    return cb(this.forced[0]);
+  }
 
   for(var v in this.validators){
     var validator = this.validators[v];
@@ -122,9 +140,11 @@ base.prototype.make = function(){
   this.container.html('');
   var defer = Q.defer();
 
-  this.title = CE('span', 'wdl');
-  this.title.text(this._title);
-  this.container.append(this.title);
+  if(!!this._title){
+    this.title = CE('span', 'wdl');
+    this.title.text(this._title);
+    this.container.append(this.title);
+  }
 
   this.message = CE('span', 'wdl', 'error');
   this.container.append(this.message);
