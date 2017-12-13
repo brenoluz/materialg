@@ -7,10 +7,39 @@ var view = function(name){
   this.list = [];
 
   this.container = CE('div', 'box');
+  this.label     = null;
 };
 view.prototype = new Base;
 view.prototype.constructor = view;
 module.exports = view;
+
+view.prototype.make = function(){
+  
+  this.container.html('');
+  var defer = Q.defer();
+
+  if(!!this._title){
+
+    this.label = CE('label', 'item', 'item-input', 'item-stacked-label');
+    this.container.append(this.label);
+
+    this.title = CE('span', 'wdl');
+    this.title.text(this._title);
+    this.label.append(this.title);
+  }
+
+  this.message = CE('span', 'wdl', 'error');
+  this.container.append(this.message);
+
+  this.inputs = CE('div', 'box');
+  this.makeInputs();
+  this.container.append(this.inputs);
+
+  this._make = true;
+
+  defer.resolve();
+  return defer.promise;
+};
 
 view.prototype.makeInputs = function(){
 
