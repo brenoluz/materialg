@@ -8,6 +8,8 @@ var base = function(name){
   this.name      = !!name ? name : '';
   this.container = CE('label', 'item', 'item-input', 'item-stacked-label');
 
+  this.container_child = null;
+
 	this.label     = null;
 	this.inputs    = null;
 	this.title     = null;
@@ -24,16 +26,69 @@ var base = function(name){
   this._edit     = true;
   this._make     = false;
 
-  this.forced    = null;
+  this.forced       = null; //Force validation
+
+  this._initChildren();
+  this._children = [];
 };
 base.prototype = new Base;
 base.prototype.constructor = base;
 module.exports = base;
 
+base.prototype._initChildren = function(){
+
+  var self = this;
+
+  this.child_container = this.child_container = CE('div', 'box');
+
+  this.pos_make.push(function(){
+
+    var def = Q.defer();
+
+    self.child_container.html('');
+    self.container.after(self.child_container);
+  
+    def.resolve();
+    return def.promise;
+  });
+};
+
+base.prototype.removeChildren = function(){
+
+  var self  = this;
+  var defer = Q.defer();
+  
+  this.child_container.fadeOut(function(){
+    
+    self._children = [];
+    self.child_container.html('');
+    self.child_container.show();
+    defer.resolve();
+  });
+
+  return defer.promise;
+};
+
+base.prototype.append = function(field){
+
+  if(field instanceof base){
+
+    this._children.push(field);
+    field.container.hide();
+    this.child_container.append(field.container);
+    field.container.fadeIn();
+
+  }else{
+    
+    field.hide();
+    this.child_container.appned(field);
+    field.fadeIn();
+  }
+};
+
 base.prototype.edit = function(flag){
    
   this._edit = flag;
-  //return this.render();
 };
 
 base.prototype.addValidator = function(validator){
@@ -91,6 +146,7 @@ base.prototype.isValid = function(cb, obj) {
   for(var v in this.validators){
     var validator = this.validators[v];
     var def = Q.defer();
+    promises.push(def.promise);
     (function($validator, $def, $obj){
       $validator.isValid(value, function(res) {
         if(!res){
@@ -100,8 +156,19 @@ base.prototype.isValid = function(cb, obj) {
         $def.resolve(res);
       }, $obj);
     
-    })(validator, def);
+    })(validator, def, obj);
+  }
+
+  //child validations
+  for(var d in this._children){
+    var child = this._children[d];
+    var def = Q.defer();
     promises.push(def.promise);
+    (function($child, $def, $obj){
+
+      $child.isValid($def.resolve, $def.reject, $obj);
+
+    })(child, def, obj);
   }
 
   Q.all(promises).then(function(data){
@@ -115,6 +182,21 @@ base.prototype.isValid = function(cb, obj) {
       cb(true);
     }
   });
+};
+
+base.prototype.getValues = function(){
+
+  var values = {};
+
+  var value  = this.val();
+  values[this.name] = typeof value == 'string' ? value.trim() : value;
+
+  for(var d in this._children){
+    var child = this._children[d];
+    values = Object.assign(values, child.getValues());
+  }
+
+  return values;
 };
 
 base.prototype.makeShow = function(){

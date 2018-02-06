@@ -84,10 +84,17 @@ form.prototype.getValues = function(){
 
   var values = {};
   for(var e in this.elements){
+
     var element = this.elements[e];
-    var name    = !!element.name ? element.name : element.attr('name');
-    var value   = element.getValue();
-    if(!!name)  values[name] = typeof value == 'string' ? value.trim() : value;
+
+    if(!!element.getValues){
+      values = Object.assign(values, element.getValues());
+    }else{
+
+      var name    = !!element.name ? element.name : element.attr('name');
+      var value   = element.getValue();
+      if(!!name)  values[name] = typeof value == 'string' ? value.trim() : value;
+    }
   }
 
   return values;
