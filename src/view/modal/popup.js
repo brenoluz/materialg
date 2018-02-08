@@ -1,10 +1,10 @@
-var Popup = require('./popup');
-var back  = require('../../back');
-var Q     = require('q');
+var Base = require('./base');
+var back = require('../../back');
+var Q    = require('q');
 
-var dialog = function(){
+var popup = function(){
 
-  Popup.call(this);
+  Base.call(this);
 
   this.MODAL_PRIORITY = back.DIALOG;
   this.container = CE('div', 'popup-container popup-showing active');
@@ -14,11 +14,28 @@ var dialog = function(){
   this._body   = '';
   this.buttons = [];
 };
-dialog.prototype = new Popup;
-dialog.prototype.constructor = dialog;
-module.exports = dialog;
+popup.prototype = new Base;
+popup.prototype.constructor = popup;
+module.exports = popup;
 
-dialog.prototype.make = function(){
+popup.prototype.setTitle = function(title){
+
+  this._title = title;
+};
+
+popup.prototype.setBody = function(body){
+
+  this._body = body;
+};
+
+popup.prototype.addButton = function(button){
+
+  var self = this;
+  button.click(function(){ self.remove.call(self) });
+  this.buttons.push(button);
+};
+
+popup.prototype.make = function(){
 
   var self = this;
   var def  = Q.defer();
@@ -35,8 +52,8 @@ dialog.prototype.make = function(){
   }
 
   var body = CE('div', 'popup-body');
+  body.append(this._body);
   popup.append(body);
-  body.append(CE('span').text(this._body));
 
   if(!!this.buttons.length){
   
