@@ -15,3 +15,31 @@ dateAtOrBelow.prototype.isValid = function(value, cb){
   if(value.getTime() > this.date.getTime()) return cb(false);
   cb(true);
 };
+
+/* Params ex: [-365] => 1 year ago or below
+              [01/01/2018] => 01/01/2018 or below
+*/
+dateAtOrBelow.load = function(params){
+
+  var defer = Q.defer();
+  var first = params[0];
+  var date  = new Date();
+
+  if(!!first){
+    
+    if(typeof first == 'number'){
+    
+      first    = parseInt(first);
+      date.setDate(date.getDate() + first);
+
+    }else{
+    
+      date = new Date(first.replace(/-/g, '/'));
+    }
+  }
+
+  var validator = new dateAtOrBelow(date);
+  defer.resolve(date);
+
+  return defer.promise;
+};
