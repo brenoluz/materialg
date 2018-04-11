@@ -19,11 +19,16 @@ view.prototype.makeInputs = function(){
     var $this = $(this);
     var val   = $this.val();
 
-    if(e.keyCode == 8 || e.keyCode == 229){
+    //Se foi apagado algum underline
+    var to_clean = (!!this.last_value && this.last_value.search('________') > 0 && val.search('________') < 0);
+
+    if(e.keyCode == 8 || to_clean){
       val = '';
     }
 
     var value = self.format.call(self, val); 
+
+    this.last_value = value;
     $this.val(value);
   });
 

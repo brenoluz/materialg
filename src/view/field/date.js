@@ -72,14 +72,28 @@ view.prototype.makeInputs = function(){
   
     var value = month.val().trim();
     if(value.length > 1) return year.focus();
-    if(value.length === 0) return day.focus().select();
+
+  }).keyup(function(e){
+  
+    var value = parseInt(month.val().trim());
+    if(isNaN(value) && e.keyCode == 8){
+      month.val('');
+      day.focus();
+    }
 
   }).focusout(function(e){
   
     var value = month.val().trim();
-    if(value == '0') return month.val('');
+    if(value === '0') return month.val('');
     if(value.length == 1){
       month.val('0' + value);
+    }
+
+  }).focus(function(e){
+
+    var value = day.val();
+    if(value.trim() == ''){
+      day.focus();
     }
   });
 
@@ -87,7 +101,20 @@ view.prototype.makeInputs = function(){
     
     var value = year.val();
     if(value.length > 4) return year.val(value.substr(0,4));
-    if(value.length === 0) return month.focus().select();
+
+  }).keyup(function(e){
+  
+    var value = parseInt(year.val().trim());
+    if(isNaN(value) && e.keyCode == 8){
+      month.focus();
+    }
+
+  }).focus(function(e){
+
+    var value = month.val();
+    if(value.trim() == ''){
+      month.focus();
+    }
   });
 
   if(!!this.value){

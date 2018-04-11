@@ -28,6 +28,8 @@ view.prototype.make = function(){
   this.container.append(this.inputs);
   this.makeInputs();
 
+  this._make = true;
+
   defer.resolve();
   return defer.promise;
 };
@@ -55,3 +57,14 @@ view.prototype.makeInputs = function(){
     label.append(span);
   }
 }
+
+view.prototype.val = function(value){
+
+  if(!!value){
+    
+    if(value == "false") value = false;
+    if(value == "true")  value = true;
+  }
+
+  return Base.prototype.val.call(this, value);
+};
