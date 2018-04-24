@@ -76,7 +76,8 @@ view.prototype.makeInputs = function(){
   }).keyup(function(e){
   
     var value = parseInt(month.val().trim());
-    if(isNaN(value) && e.keyCode == 8){
+
+    if(isNaN(value) && (e.keyCode == 8)){
       month.val('');
       day.focus();
     }
@@ -105,7 +106,7 @@ view.prototype.makeInputs = function(){
   }).keyup(function(e){
   
     var value = parseInt(year.val().trim());
-    if(isNaN(value) && e.keyCode == 8){
+    if(isNaN(value) && (e.keyCode == 8 || e.keyCode == 229)){
       month.focus();
     }
 

@@ -22,7 +22,7 @@ view.prototype.makeInputs = function(){
     //Se foi apagado algum underline
     var to_clean = (!!this.last_value && this.last_value.search('________') > 0 && val.search('________') < 0);
 
-    if(e.keyCode == 8 || to_clean){
+    if(to_clean){
       val = '';
     }
 
