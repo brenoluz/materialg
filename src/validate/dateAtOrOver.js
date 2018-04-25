@@ -42,7 +42,7 @@ dateAtOrOver.load = function(params){
   }
 
   var validator = new dateAtOrOver(date);
-  defer.resolve(date);
+  defer.resolve(validator);
 
   return defer.promise;
 };
