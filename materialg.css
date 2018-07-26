@@ -138,3 +138,11 @@ html, body{
     color: #fff;
     background-color: #af2930;
 }
+
+.invalid{
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 14px;
+    border-left: 2px red solid;
+    border-right: 2px red solid;
+}

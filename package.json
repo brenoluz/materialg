@@ -28,6 +28,8 @@
   },
   "devDependencies": {
     "browserfy": "^1.0.0",
+    "express": "^4.16.3",
+    "express-generator": "^4.16.0",
     "uglify-js": "^2.8.14"
   }
 }

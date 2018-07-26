@@ -8,8 +8,6 @@ var base = function(name){
   this.name      = !!name ? name : '';
   this.container = CE('label', 'item', 'item-input', 'item-stacked-label');
 
-  this.container_child = null;
-
 	this.label     = null;
 	this.inputs    = null;
 	this.title     = null;
@@ -20,11 +18,13 @@ var base = function(name){
   this.pos_make  = [];
 
   this.validators = [];
+  this._errors    = {};
   this.filters    = [];
 
   this._title    = '';
   this._edit     = true;
   this._make     = false;
+
 
   this.forced       = null; //Force validation
 
@@ -39,8 +39,8 @@ base.prototype._initChildren = function(){
 
   var self = this;
 
-  this.child_container = this.child_container = CE('div', 'box');
-
+  this.child_container = CE('div', 'box');
+  
   this.pos_make.push(function(){
 
     var def = Q.defer();
@@ -57,7 +57,7 @@ base.prototype.removeChildren = function(){
 
   var self  = this;
   var defer = Q.defer();
-  
+
   this.child_container.fadeOut(function(){
     
     self._children = [];
@@ -81,7 +81,7 @@ base.prototype.append = function(field){
   }else{
     
     field.hide();
-    this.child_container.appned(field);
+    this.child_container.append(field);
     field.fadeIn();
   }
 };
@@ -127,10 +127,27 @@ base.prototype.forceValid = function(res, message){
   this.forced = [res, message];
 };
 
+base.prototype.addError = function(msg){
+  
+  var key = this.name;
+
+  if(!this._errors.hasOwnProperty(key)){
+    this._errors[key] = [];
+  }
+
+  this._errors[key].push(msg);
+};
+
+base.prototype.getErrors = function(){
+
+  return this._errors;
+};
+
 base.prototype.isValid = function(cb, obj) {
 
   var self = this;
   var res = true;
+  this._errors = {};
   var promises = [];
   var value = this.getValue();
 
@@ -150,8 +167,9 @@ base.prototype.isValid = function(cb, obj) {
     (function($validator, $def, $obj){
       $validator.isValid(value, function(res) {
         if(!res){
-          self.message.text($validator.msg);
+          self.message.text($validator.message);
           self.container.addClass('invalid');
+          self.addError($validator);
         }
         $def.resolve(res);
       }, $obj);
@@ -166,7 +184,15 @@ base.prototype.isValid = function(cb, obj) {
     promises.push(def.promise);
     (function($child, $def, $obj){
 
-      $child.isValid($def.resolve, $def.reject, $obj);
+      $child.isValid(function(res){
+      
+        if(!res){
+          Object.assign(self._errors, $child.getErrors());
+        }
+
+        $def.resolve();
+
+      }, $def.reject, $obj);
 
     })(child, def, obj);
   }
@@ -223,12 +249,12 @@ base.prototype.make = function(){
   var defer = Q.defer();
 
   if(!!this._title){
-    this.title = CE('span', 'wdl');
+    this.title = CE('div', 'box');
     this.title.text(this._title);
     this.container.append(this.title);
   }
 
-  this.message = CE('span', 'wdl', 'error');
+  this.message = CE('div', 'box', 'error');
   this.container.append(this.message);
 
   this.inputs = CE('div', 'box');

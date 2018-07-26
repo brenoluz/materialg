@@ -36,7 +36,15 @@ dialog.prototype.make = function(){
 
   var body = CE('div', 'popup-body');
   popup.append(body);
-  body.append(CE('span').text(this._body));
+
+  var div = CE('div');
+  body.append(div);
+
+  if(typeof this._body == 'object'){
+    div.append(this._body);
+  }else{
+    div.text(this._body);
+  }
 
   if(!!this.buttons.length){
   

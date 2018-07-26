@@ -4,8 +4,7 @@ var Q    = require('q');
 var view = function(name){
 
   Base.call(this, name);
-  this.list = [];
-
+  this.list      = [];
   this.container = CE('div', 'box');
   this.label     = null;
 };
@@ -59,7 +58,10 @@ view.prototype.makeInputs = function(){
     if(this.value == key) input.attr('checked', 'checked');
   }
 
-  this.inputs.change(function(e){ self.value = self.container.find(':checked').val(); self.onchange.call(self, e); });
+  this.inputs.change(function(){ 
+    self.value = self.container.find(':checked').val(); 
+    self.onchange.call(self, self.value); 
+  });
 };
 
 view.prototype.add = function(key, label){
