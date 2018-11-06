@@ -4,7 +4,7 @@ var Q    = require('q');
 var atOrBelow = function(limit){
 
   this.limit = limit
-  this.msg   = 'Valor superior ao limite de ' + this.limit;
+  this.message   = 'Valor superior ao limite de ' + this.limit;
 };
 atOrBelow.prototype = new Base;
 atOrBelow.prototype.constructor = atOrBelow;

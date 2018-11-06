@@ -16,11 +16,11 @@ view.prototype.make = function(){
   this.container.html('');
   var defer = Q.defer();
 
-  this.title = CE('span', 'wdl');
+  this.title = CE('span', 'box');
   this.title.text(this._title);
   this.container.append(this.title);
 
-  this.message = CE('span', 'wdl', 'error');
+  this.message = CE('span', 'box', 'error');
   this.container.append(this.message);
 
   this.inputs = CE('select');

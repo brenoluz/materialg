@@ -3,7 +3,7 @@ var Base = require('./base');
 var atOrOver = function(limit){
 
   this.limit = limit
-  this.msg  = 'Valor inferior ao limite de ' + this.limit;
+  this.message  = 'Valor inferior ao limite de ' + this.limit;
 };
 atOrOver.prototype = new Base;
 atOrOver.prototype.constructor = atOrOver;

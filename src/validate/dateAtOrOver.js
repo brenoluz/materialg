@@ -4,7 +4,7 @@ var Q    = require('q');
 var dateAtOrOver = function(date){
 
   this.date = !!date ? date : new Date();
-  this.msg  = 'A data deve ser igual ou superior a {0}'.format(date.toLocaleDateString());
+  this.message  = 'A data deve ser igual ou superior a {0}'.format(date.toLocaleDateString());
 };
 dateAtOrOver.prototype = new Base;
 dateAtOrOver.prototype.constructor = dateAtOrOver;

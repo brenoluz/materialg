@@ -3,7 +3,7 @@ var Base = require('./base');
 var dateAtOrBelow = function(date){
 
   this.date = date;
-  this.msg  = 'Data futura inválida';
+  this.message  = 'Data futura inválida';
 };
 dateAtOrBelow.prototype = new Base;
 dateAtOrBelow.prototype.constructor = dateAtOrBelow;
