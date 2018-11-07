@@ -7,6 +7,8 @@ var view = function(name){
 
   this.container = CE('div', 'item item-icon-right');
   this.container.css({'white-space': 'normal'});
+
+  this.value = false;
 };
 view.prototype = new Base;
 view.prototype.constructor = view;
@@ -45,7 +47,6 @@ view.prototype.makeInputs = function(){
   var value = !!this.value;
 
   if(this._edit){
-
     var input = CE('input').attr({'type': 'checkbox', name: this.name}).css({'float': 'right'});
     if(value) input.attr('checked', 'checked');
     input.click(function(){ self.value = $(this).is(':checked'); });
