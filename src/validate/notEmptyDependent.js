@@ -3,7 +3,7 @@ var Base = require('./base');
 var NotEmptyDependent = function(dep){
 
   this.dependent = dep;
-  this.msg = 'Campo obrigatório';
+  this.message = 'Campo obrigatório';
 };
 NotEmptyDependent.prototype = new Base;
 NotEmptyDependent.prototype.constructor = NotEmptyDependent;

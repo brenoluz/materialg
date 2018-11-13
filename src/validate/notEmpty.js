@@ -2,7 +2,7 @@ var Base = require('./base');
 
 var NotEmpty = function(){
 
-    this.msg = 'Campo obrigatório';
+    this.message = 'Campo obrigatório';
 };
 NotEmpty.prototype = new Base;
 NotEmpty.prototype.constructor = NotEmpty;
