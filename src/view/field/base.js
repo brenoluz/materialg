@@ -25,7 +25,6 @@ var base = function(name){
   this._edit     = true;
   this._make     = false;
 
-
   this.forced       = null; //Force validation
 
   this._initChildren();
