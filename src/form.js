@@ -20,7 +20,7 @@ form.prototype.addValidator = function(validator){
   this.validators.push(validator);
 };
 
-form.prototype.isValidForm = function(cb){
+form.prototype.isValidForm = function(cb, obj){
 
   var values  = this.getValues();
   var clone_v = [];
@@ -34,7 +34,6 @@ form.prototype.isValidForm = function(cb){
   
     //ended without error
     if(!validator) return cb(true);
-
     validator.isValid(values, function(res){
 
       //stop when false
@@ -42,7 +41,7 @@ form.prototype.isValidForm = function(cb){
       var next_validator = clone_v.pop();
 
       return func_v(next_validator);
-    });
+    }, obj);
   };
 
   return func_v(first_validator);
@@ -62,12 +61,12 @@ form.prototype.isValid = function(cb, obj){
     promises.push(def.promise);
   }
 
-  Q.all(promises).then(function(data){
+  Q.all(promises).done(function(data){
 
     var args = Array.prototype.slice.call(data);
     var res  = args.indexOf(false) < 0;
     if(!res) return cb(false);
-    return self.isValidForm(cb);
+    return self.isValidForm(cb, obj);
   });
 };
 

@@ -8,4 +8,5 @@ module.exports = {
   'DateAtOrOver':      require('./dateAtOrOver'),
   'AtOrBelow':         require('./AtOrBelow'),
   'AtOrOver':          require('./AtOrOver'),
+  'Base':              require('./base'),
 };

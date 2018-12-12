@@ -30,8 +30,7 @@ popup.prototype.setBody = function(body){
 
 popup.prototype.addButton = function(button){
 
-  var self = this;
-  button.click(function(){ self.remove.call(self) });
+  button.click(this.remove.bind(this));
   this.buttons.push(button);
 };
 
