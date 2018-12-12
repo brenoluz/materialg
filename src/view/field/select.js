@@ -56,7 +56,11 @@ view.prototype.makeInputs = function(){
     if(this.value == key) option.attr('selected', 'selected');
   }
 
-  this.inputs.on('change', function(){ self.value = self.container.find(':selected').val(); self.onchange.call(self, self.value); });
+  this.inputs.on('change', function(){
+    self.value = self.container.find(':selected').val();
+    self.onchange.call(self, self.value);
+  });
+
 };
 
 view.prototype.add = function(key, label){

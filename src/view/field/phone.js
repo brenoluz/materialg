@@ -30,6 +30,7 @@ view.prototype.makeInputs = function(){
 
     this.last_value = value;
     $this.val(value);
+    this.onchange.call(self, self.value);
   });
 
 
@@ -37,6 +38,7 @@ view.prototype.makeInputs = function(){
   if(!this._edit)  this.phone.attr('disabled', 'disabled');
 
   this.inputs.append(this.phone);
+
 };
 
 view.prototype.format = function(value){

@@ -1,10 +1,12 @@
 var Base = require('./base');
+var BaseField = require('./view/field/base');
 var Q    = require('q');
 
 var form = function(){
   
   this.elements   = [];
   this.validators = [];
+  this.hasUnsavedChanges = false;
 };
 form.prototype = new Base;
 form.prototype.constructor = form;
@@ -13,6 +15,7 @@ module.exports = form;
 form.prototype.append = function(element){
 
   this.elements.push(element);
+  this.bindOnChange(element);
 };
 
 form.prototype.addValidator = function(validator){
@@ -97,4 +100,29 @@ form.prototype.getValues = function(){
   }
 
   return values;
+};
+
+form.prototype.wasSaved = function(value){
+  this.hasUnsavedChanges = false;
+};
+
+form.prototype.haveUnsavedChanges = function(){
+  return this.hasUnsavedChanges;
+};
+
+form.prototype.bindOnChange = function(element){
+
+  var self = this;
+
+  // if(!(element instanceof BaseField)){
+  //   throw { 'erro' : 'Campo não herda de materialg.view.field.base' };
+  // }
+
+  if(!!element.onEvent)
+  {
+    element.onEvent('change', function(){
+      self.hasUnsavedChanges = true;
+    });
+  }
+
 };

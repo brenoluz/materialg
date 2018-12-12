@@ -40,6 +40,7 @@ view.prototype.makeInputs = function(){
 
   var self = this;
   this.inputs.html('');
+  this.inputs.off('change');
 
   var label = CE('label', 'checkbox');
   this.inputs.append(label);
@@ -49,10 +50,15 @@ view.prototype.makeInputs = function(){
   if(this._edit){
     var input = CE('input').attr({'type': 'checkbox', name: this.name}).css({'float': 'right'});
     if(value) input.attr('checked', 'checked');
-    input.click(function(){ self.value = $(this).is(':checked'); });
     label.append(input);
+
+    input.click(function(){
+      self.value = $(this).is(':checked');
+      self.onchange.call(self, self.value);
+    });
+
   }else{
-   
+    this.container.css({'color' : '#6e6e6e'});
     var span = CE('span', 'material-icons wdr');
     if(value) span.html('&#xE5CA;');
     label.append(span);
@@ -62,7 +68,8 @@ view.prototype.makeInputs = function(){
 view.prototype.val = function(value){
 
   if(!!value){
-    
+
+    if(value == 9) value = false;
     if(value == "false") value = false;
     if(value == "true")  value = true;
   }

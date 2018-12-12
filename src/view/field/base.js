@@ -11,6 +11,7 @@ var base = function(name){
 	this.label     = null;
 	this.inputs    = null;
 	this.title     = null;
+	this.description = null;
 	this.message   = null;
 	this.value     = '';
 
@@ -22,6 +23,7 @@ var base = function(name){
   this.filters    = [];
 
   this._title    = '';
+  this._description = '';
   this._edit     = true;
   this._make     = false;
 
@@ -29,6 +31,9 @@ var base = function(name){
 
   this._initChildren();
   this._children = [];
+
+  this.events = {};
+
 };
 base.prototype = new Base;
 base.prototype.constructor = base;
@@ -101,6 +106,11 @@ base.prototype.addFilter = function(filter){
 base.prototype.setTitle = function(title){
   this._title = title;
   if(this.title) this.title.text(title);
+};
+
+base.prototype.setDescription = function(description){
+  this._description = description;
+  if(this.description) this.description.text(title);
 };
 
 base.prototype.getValue = function(){
@@ -253,6 +263,13 @@ base.prototype.make = function(){
     this.container.append(this.title);
   }
 
+  if(!!this._description)
+  {
+    this.description = CE('div', 'box');
+    this.description.text(this._description);
+    this.container.append(this.description);
+  }
+
   this.message = CE('div', 'box', 'error');
   this.container.append(this.message);
 
@@ -281,7 +298,50 @@ base.prototype.clear = function(){
   self.val('');
 };
 
+/**
+ * Método utilizado para registrar um evento
+ * @param eventName
+ * @param callback
+ * @param id
+ */
+base.prototype.onEvent = function(eventName, callback)
+{
+  if(!this.events[eventName]){
+    this.events[eventName] = [];
+  }
+
+  this.events[eventName].push(callback);
+};
+
+/**
+ * Método utilizado para executar determinados eventos registrados
+ * @param eventName
+ * @param parameters
+ * @returns {Array}
+ */
+base.prototype.fireEvent = function(eventName, parameters)
+{
+
+  var arrayEventCallbacks = this.events[eventName];
+  var responses = [];
+
+  if(!!arrayEventCallbacks){
+
+    for(var index in arrayEventCallbacks)
+    {
+      var callback = arrayEventCallbacks[index];
+      responses[index] = callback.apply(this, parameters);
+    }
+
+  }
+
+  return responses;
+
+};
+
 base.prototype.attr        = function(){ /*for overwrite*/ };
 base.prototype.removeClass = function(){ /*for overwrite*/ };
 base.prototype.makeInputs  = function(){ /*for overwrite*/ };
-base.prototype.onchange    = function(){ /*for overwrite*/ };
+base.prototype.onchange    = function(){
+  this.fireEvent('change', [this, this.value]);
+};

@@ -29,8 +29,18 @@ view.prototype.makeInputs = function(){
 
   if(!!this.value) input.val(this.value);
   if(!this._edit)  input.attr('disabled', 'disabled');
-  input.keyup(function(e){ self.value = input.val(); self.keyup.call(self, e); });
   this.inputs.append(input);
+
+  input.keyup(function(e){
+    self.value = input.val();
+    self.keyup.call(self, e);
+    self.onchange.call(self, self.value);
+  });
+
+  input.change(function(e){
+    self.value = input.val();
+  });
+
 };
 
 view.prototype.keyup = function(){};
