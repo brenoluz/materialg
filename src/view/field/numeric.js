@@ -57,6 +57,10 @@ view.prototype.makeInputs = function(){
         self.value = null; 
         $this.val('');
       }
+  }).change(function(e){
+
+    self.onchange.call(self, self.value);
+
   });
 }
 

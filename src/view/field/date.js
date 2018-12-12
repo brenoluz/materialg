@@ -164,5 +164,8 @@ view.prototype.makeInputs = function(){
     if(value.length > max){
         that.val(value.substring(0, max));
     }
+
+    self.onchange.call(self, self.value);
+
   });
 };
