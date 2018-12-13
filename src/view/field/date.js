@@ -138,6 +138,7 @@ view.prototype.makeInputs = function(){
     var v_day   = day.val().trim();
     var v_month = month.val().trim();
     var v_year  = year.val().trim();
+    self.onchange.call(self, self.value);
 
     if(v_year.length != 4) v_year = '';
     if(v_day !== '' && v_month !== '' && year !== ''){
