@@ -110,7 +110,7 @@ base.prototype.setTitle = function(title){
 
 base.prototype.setDescription = function(description){
   this._description = description;
-  if(this.description) this.description.text(title);
+  if(this.description) this.description.html(description);
 };
 
 base.prototype.getValue = function(){
@@ -266,7 +266,7 @@ base.prototype.make = function(){
   if(!!this._description)
   {
     this.description = CE('div', 'box');
-    this.description.text(this._description);
+    this.description.html(this._description);
     this.container.append(this.description);
   }
 
