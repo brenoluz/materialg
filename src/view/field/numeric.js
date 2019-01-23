@@ -48,6 +48,7 @@ view.prototype.makeInputs = function(){
       var value  = parseInt(value);
       self.value = (value/Math.pow(10, self.decimal)).formatMoney(self.decimal, '.', '');
       $this.val(self.value);
+      self.fireEvent('keyup', [this, this.value]);
 
   }).focusout(function(e){
       var $this = $(this);
@@ -57,6 +58,7 @@ view.prototype.makeInputs = function(){
         self.value = null; 
         $this.val('');
       }
+      self.fireEvent('keyup', [this, this.value]);
   }).change(function(e){
 
     self.onchange.call(self, self.value);
