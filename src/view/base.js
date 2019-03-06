@@ -31,14 +31,11 @@ base.prototype.toString = function(){
 base.prototype.render = function(){
 
   var self  = this;
-  var defer = Q.defer();
   this.container.html('');
-
-  var pre_promises = [];
-  var pos_promises = [];
 
   var onmake = function(){
 
+    var pos_promises = [];
     for(var k in self.pos_make){
       var pos_function = self.pos_make[k];
       (function(func, ctx){ 
@@ -49,21 +46,19 @@ base.prototype.render = function(){
       })(pos_function, self);
     }
 
-    Q.all(pos_promises).then(function(){
-      defer.resolve(self.container);
-    }, console.log).done();
+    return Q.all(pos_promises);
   }
 
-  var onpre = function(){ self.make().then(onmake, console.log).done(); };
+  var onpre = function(){ return self.make().then(onmake); };
 
+  var pre_promises = [];
   for(var k in this.pre_make){
     var pre_function = this.pre_make[k];
     var resp = pre_function.call(self);
     if(typeof(resp) == 'object') pre_promises.push(resp);
   }
-  Q.all(pre_promises).then(onpre, console.log).done();
 
-  return defer.promise;
+  return Q.all(pre_promises).then(onpre);
 };
 
 module.exports = base;
