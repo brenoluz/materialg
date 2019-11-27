@@ -236,7 +236,6 @@ base.prototype.getValues = function(){
 
 base.prototype.makeShow = function(){
 
-  var self = this;
   this.inputs.html('');
 
   var value = !!this.value ? this.value : '---';
@@ -286,7 +285,7 @@ base.prototype.make = function(){
 base.prototype.val = function(value){
 
   if(value === undefined){
-    return this.value;
+    return this.getValue();
   }else{
     this.value = value;
     if(this._make) this.makeInputs();

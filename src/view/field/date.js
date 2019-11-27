@@ -6,6 +6,7 @@ var view = function(name){
 
   Base.call(this, name);
   this.format = null;
+  this.value  = '';
 };
 view.prototype = new Base;
 view.prototype.constructor = view;
@@ -56,6 +57,7 @@ view.prototype.makeInputs = function(){
   input.keyup(this.keyup.bind(this, input));
 
   this.inputs.append(input);
+  if(!!this.value) input.val(this.value);
 
   if(!this._edit){
     input.attr('disabled', 'disabled');
@@ -94,3 +96,25 @@ view.prototype.getValue = function(){
   return new Date(date);
 }
 
+view.prototype.val = function(value){
+
+  if(value === undefined){
+    return this.getValue();
+  }else{
+    this.setValue(value);
+    if(this._make) this.makeInputs();
+  }
+};
+
+view.prototype.setValue = function(value){
+
+  let format = this.get_format();
+
+  if(value instanceof Date){
+    value = value.today().toNSI();
+    this.value = tools.transform_date(value, 'aaaa-MM-dd', format);
+    return;
+  }
+
+  this.value = value;
+}
