@@ -11,6 +11,16 @@ module.exports = dateAtOrBelow;
 
 dateAtOrBelow.prototype.isValid = function(value, cb){
 
+  if(value instanceof Date && value.toString() == 'Invalid Date'){
+    cb(true);
+    return;
+  }
+
+  if(!value){
+    cb(true);
+    return;
+  }
+
   var value = value instanceof Date ? value : new Date(value.split('-'));
   if(value.today().getTime() > this.date.today().getTime()) return cb(false);
   cb(true);

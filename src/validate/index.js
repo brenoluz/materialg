@@ -3,6 +3,7 @@ module.exports = {
   'Decorator':         require('./decorator'),
   'Checked':           require('./checked'),
   'NotEmpty':          require('./notEmpty'),
+  'Date':              require('./date'),
   'NotEmptyDependent': require('./notEmptyDependent'),
   'DateAtOrBelow':     require('./dateAtOrBelow'),
   'DateAtOrOver':      require('./dateAtOrOver'),

@@ -12,6 +12,16 @@ module.exports = dateAtOrOver;
 
 dateAtOrOver.prototype.isValid = function(value, cb){
 
+  if(value instanceof Date && value.toString() == 'Invalid Date'){
+    cb(true);
+    return;
+  }
+
+  if(!value){
+    cb(true);
+    return;
+  }
+
   var value = value instanceof Date ? value : new Date(value.replace(/-/g, '/'));
   var clone = new Date(this.date);
   clone.setDate(clone.getDate() - 1)

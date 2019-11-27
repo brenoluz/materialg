@@ -1,9 +1,11 @@
-var Base = require('./base');
+const Base  = require('./base');
+const tools = require('../../tools');
 var Q    = require('q');
 
 var view = function(name){
 
   Base.call(this, name);
+  this.format = null;
 };
 view.prototype = new Base;
 view.prototype.constructor = view;
@@ -14,11 +16,11 @@ view.prototype.make = function(){
   var defer = Q.defer();
   this.container.html('');
 
-  this.title = CE('span', 'wdl');
+  this.title = CE('div', 'box');
   this.title.text(this._title);
   this.container.append(this.title);
 
-  this.message = CE('span', 'wdl', 'error');
+  this.message = CE('div', 'box', 'error');
   this.container.append(this.message);
 
   this.inputs = CE('div', 'box', 'dateContainer');
@@ -31,142 +33,64 @@ view.prototype.make = function(){
   return defer.promise;
 };
 
-view.prototype.makeInputs = function(){
+view.prototype.set_format = function(format){
 
-  var self  = this;
-  
-  this.inputs.off('focusout');
-  this.inputs.html('');
- 
-  var day   = CE('input', 'wdl').attr({'type': 'number', maxlength: "2", max: "31", min: "1", placeholder: 'dd'});
-  var month = CE('input', 'wdl').attr({'type': 'number', maxlength: "2", max: "12", min: "1", placeholder: 'mm'});
-  var year  = CE('input', 'wdl').attr({'type': 'number', maxlength: "4", max: "9999", min: "1", placeholder: 'aaaa'});
+  this.format = format;
+}
 
-  if(!this._edit){
-    day.attr('disabled', 'disabled');
-    month.attr('disabled', 'disabled');
-    year.attr('disabled', 'disabled');
+view.prototype.get_format = function(){
+
+  if(!this.format){
+    this.format = (new Date('2000/11/30')).toLocaleDateString().replace('2000','aaaa').replace('11', 'MM').replace('30','dd');
   }
 
-  this.inputs.append(day);
-  this.inputs.append(CE('span', 'wdl').text('/'));
-  this.inputs.append(month);
-  this.inputs.append(CE('span', 'wdl').text('/'));
-  this.inputs.append(year);
+  return this.format;
+}
 
-  day.keyup(function(e){
+view.prototype.makeInputs = function(){
+
+  this.inputs.html('');
+
+  let format = this.get_format();
+  let input  = CE('input', 'wdl').attr({'type': 'tel', maxlength: "10", placeholder: format});
+  input.keyup(this.keyup.bind(this, input));
+
+  this.inputs.append(input);
+
+  if(!this._edit){
+    input.attr('disabled', 'disabled');
+  }
+}
+
+view.prototype.keyup = function(input, event){
+
+  let value  = input.val().trim();
+  this.value = value;
   
-    var value = day.val();
-    if(value.length > 1) month.focus();
+  if([229, 8, 13].indexOf(event.keyCode) >= 0){
+    return;
+  }
 
-  }).focusout(function(e){
-  
-    var value = day.val().trim();
-    if(value == '0') return day.val('');
-    if(value.length == 1){
-      day.val('0' + value);
-    }
-  });
+  let format     = this.get_format()
+  let size       = value.length;   
+  let next_digit = format.substr(size, 1);
 
-  month.keyup(function(e){
-  
-    var value = month.val().trim();
-    if(value.length > 1) return year.focus();
+  if(next_digit == '/' || next_digit == '-'){
+    this.value = value + next_digit; 
+    input.val(this.value);
+  }
+}
 
-  }).keyup(function(e){
-  
-    var value = parseInt(month.val().trim());
+view.prototype.getValue = function(){
 
-    if(isNaN(value) && (e.keyCode == 8)){
-      month.val('');
-      day.focus();
-    }
+  let format = this.get_format()
+  let value  = this.value.trim();
+  let date   = tools.transform_date(value, format, 'aaaa/MM/dd');
 
-  }).focusout(function(e){
-  
-    var value = month.val().trim();
-    if(value === '0') return month.val('');
-    if(value.length == 1){
-      month.val('0' + value);
-    }
+  if(!date){
+    return '';
+  }
 
-  }).focus(function(e){
+  return new Date(date);
+}
 
-    var value = day.val();
-    if(value.trim() == ''){
-      day.focus();
-    }
-  });
-
-  year.keyup(function(e){
-    
-    var value = year.val();
-    if(value.length > 4) return year.val(value.substr(0,4));
-
-  }).keyup(function(e){
-  
-    var value = parseInt(year.val().trim());
-    if(isNaN(value) && (e.keyCode == 8 || e.keyCode == 229)){
-      month.focus();
-    }
-
-  }).focus(function(e){
-
-    var value = month.val();
-    if(value.trim() == ''){
-      month.focus();
-    }
-  });
-
-  if(!!this.value){
-    
-    if(this.value instanceof Date){
-      day.val(this.value.getDate());
-      day.trigger('focusout');
-
-      month.val(this.value.getMonth() + 1);
-      month.trigger('focusout');
-
-      year.val(this.value.getFullYear());
-      year.trigger('focusout');
-    }
-  };
-
-  this.inputs.on('keyup', function(e){
-
-    var $this   = $(this);
-    var v_day   = day.val().trim();
-    var v_month = month.val().trim();
-    var v_year  = year.val().trim();
-    self.onchange.call(self, self.value);
-
-    if(v_year.length != 4) v_year = '';
-    if(v_day !== '' && v_month !== '' && year !== ''){
-
-      var date = new Date(v_year, v_month - 1, v_day);
-      var check = date.getFullYear() == v_year && date.getMonth() + 1 == v_month && date.getDate() == v_day;
-      if(check){
-        self.value = date;
-        self.inputs.removeClass('wrong');
-        return;
-      }
-    }
-
-    self.value = '';
-    self.inputs.addClass('wrong');
-  });
-
-  self.inputs.find('input').on('change', function(e){
-
-    var that  = $(this);
-    
-    var value = that.val().trim();
-    var max   = that.attr('maxlength');
-    if(value.length > max){
-        that.val(value.substring(0, max));
-    }
-
-    self.onchange.call(self, self.value);
-
-  });
-};

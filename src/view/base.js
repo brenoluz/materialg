@@ -1,5 +1,4 @@
 var Base = require('../base');
-var Q    = require('q');
 
 var CE = function(tag){
 
@@ -28,37 +27,28 @@ base.prototype.toString = function(){
   return this.container.html();
 };
 
-base.prototype.render = function(){
+base.prototype.render = async function(arg){
 
-  var self  = this;
   this.container.html('');
 
-  var onmake = function(){
+  let pre_promises = [];
+  for(let func of this.pre_make){
 
-    var pos_promises = [];
-    for(var k in self.pos_make){
-      var pos_function = self.pos_make[k];
-      (function(func, ctx){ 
-
-        var resp = func.call(ctx);
-        if(typeof(resp) == 'object') pos_promises.push(resp);
-      
-      })(pos_function, self);
-    }
-
-    return Q.all(pos_promises);
-  }
-
-  var onpre = function(){ return self.make().then(onmake); };
-
-  var pre_promises = [];
-  for(var k in this.pre_make){
-    var pre_function = this.pre_make[k];
-    var resp = pre_function.call(self);
+    let resp = func.call(this, arg);
     if(typeof(resp) == 'object') pre_promises.push(resp);
   }
+  await Promise.all(pre_promises)
 
-  return Q.all(pre_promises).then(onpre);
+  await this.make(arg);
+
+  let pos_promises = [];
+  for(let func of this.pos_make){
+
+    let resp = func.call(this, arg);
+    if(typeof(resp) == 'object') pos_promises.push(resp);
+  }
+  
+  return Promise.all(pos_promises);
 };
 
 module.exports = base;
