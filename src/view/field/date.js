@@ -1,9 +1,10 @@
 const Base  = require('./base');
 const tools = require('../../tools');
-var Q    = require('q');
+const ValidatorDate = require('../../validate/date');
+const Q = require('q');
 
-var view = function(name){
-
+const view = function(name){
+  
   Base.call(this, name);
   this.format = null;
   this.value  = '';
@@ -42,7 +43,7 @@ view.prototype.set_format = function(format){
 view.prototype.get_format = function(){
 
   if(!this.format){
-    this.format = (new Date('2000/11/30')).toLocaleDateString().replace('2000','aaaa').replace('11', 'MM').replace('30','dd');
+    this.format = tools.get_date_format();
   }
 
   return this.format;
@@ -93,6 +94,12 @@ view.prototype.getValue = function(){
     return '';
   }
 
+  let validator = new ValidatorDate(null);
+  validator.disable_transform();
+  if(!validator.isValidSync(date)){
+    return '';
+  }
+
   return new Date(date);
 }
 
@@ -108,6 +115,8 @@ view.prototype.val = function(value){
 
 view.prototype.setValue = function(value){
 
+  console.log('set value', value);
+
   let format = this.get_format();
 
   if(value instanceof Date){
@@ -118,3 +127,4 @@ view.prototype.setValue = function(value){
 
   this.value = value;
 }
+

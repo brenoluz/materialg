@@ -12,7 +12,7 @@ module.exports = {
 
     for(let i in mask){
 
-      index = parseInt(i);
+      let index = parseInt(i);
      
       if(!parts[index]){
         break;
@@ -24,5 +24,10 @@ module.exports = {
     }
 
     return to_format;
+  },
+
+  get_date_format: function(){
+
+    return (new Date('2000/11/30')).toLocaleDateString().replace('2000','aaaa').replace('11', 'MM').replace('30','dd');
   }
 }
