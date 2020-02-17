@@ -20,7 +20,7 @@ view.prototype.make = function(){
   var defer = Q.defer();
 
   this.title = CE('span', 'wdl');
-  this.title.text(this._title);
+  this.title.html(this._title);
   this.container.append(this.title);
 
   //checkbox not have message

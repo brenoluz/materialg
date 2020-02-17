@@ -258,7 +258,7 @@ base.prototype.make = function(){
 
   if(!!this._title){
     this.title = CE('div', 'box');
-    this.title.text(this._title);
+    this.title.html(this._title);
     this.container.append(this.title);
   }
 
