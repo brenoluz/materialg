@@ -47,3 +47,4 @@ date.prototype.isValidSync = function(value, transformed){
 
   return (value.toString() != 'Invalid Date');
 }
+

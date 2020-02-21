@@ -73,6 +73,12 @@ base.prototype.removeChildren = function(){
   return defer.promise;
 };
 
+base.prototype.focus = function(){
+  
+  this.inputs.focus();
+  return Q(true);
+}
+
 base.prototype.append = function(field){
 
   if(field instanceof base){
