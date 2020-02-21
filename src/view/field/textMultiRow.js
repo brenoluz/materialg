@@ -19,7 +19,7 @@ view.prototype.make = function(){
   var self = this;
 
   var div = CE('div', 'form-group');
-  var label = CE('label').text(this.title);
+  var label = CE('label').html(this.title);
   div.append(label);
 
   this.input = CE('input', 'form-control').attr({type: 'text'});

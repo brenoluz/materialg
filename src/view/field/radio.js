@@ -23,7 +23,7 @@ view.prototype.make = function(){
     this.container.append(this.label);
 
     this.title = CE('span', 'wdl');
-    this.title.text(this._title);
+    this.title.html(this._title);
     this.label.append(this.title);
   }
 
