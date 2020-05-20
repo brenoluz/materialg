@@ -6,6 +6,7 @@ var modal = function(){
   Base.call(this);
 
   this._title        = '';
+  this._is_title_html = false;
   this._body         = null;
   this._left_button  = null;
   this._right_button = null;
@@ -30,9 +31,10 @@ modal.prototype.setRightButton = function(button){
   this._right_button = button;
 };
 
-modal.prototype.setTitle = function(title){
+modal.prototype.setTitle = function(title, is_html){
 
   this._title = title;
+  this._is_title_html = !!is_html;
 };
 
 modal.prototype.make = function(){
@@ -49,9 +51,13 @@ modal.prototype.make = function(){
 
       if(!!self._left_button) header.append(self._left_button);
       if(!!self._title){
-        var title = CE('h1', 'title title-left');
-        header.append(title);
-        title.text(self._title);
+        if(self._is_title_html){
+          header.append(self._title);
+        }else{
+          var title = CE('h1', 'title title-left');
+          header.append(title);
+          title.text(self._title);
+        }
         if(!!self._left_button)  title.css('left', '92px');
         if(!!self._right_button) title.css('right', '92px');
       }
