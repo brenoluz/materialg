@@ -28,6 +28,6 @@ module.exports = {
 
   get_date_format: function(){
 
-    return (new Date('2000/11/30')).toLocaleDateString().replace('2000','aaaa').replace('11', 'MM').replace('30','dd');
+    return (new Date('2000/11/30')).toLocaleDateString().replace('2000','aaaa').replace('11', 'MM').replace('30','dd').replace('29', 'dd');
   }
 }
