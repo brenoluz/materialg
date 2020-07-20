@@ -22,7 +22,7 @@ date.prototype.isValid = function(value, cb){
   return cb(is_valid);
 }
 
-date.prototype.isValidSync = function(value, transformed){
+date.prototype.isValidSync = function(value){
 
   if(!value){
     return true; 

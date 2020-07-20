@@ -86,8 +86,14 @@ view.prototype.keyup = function(input, event){
 
 view.prototype.getValue = function(){
 
-  let format = this.get_format()
-  let value  = this.value.trim();
+  let format = this.get_format();
+  let value  = this.value;
+
+  if(typeof value != 'string'){
+    return this.value;
+  }
+
+  value = value.trim();
   let date   = tools.transform_date(value, format, 'aaaa/MM/dd');
 
   if(!date){
