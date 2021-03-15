@@ -70,7 +70,8 @@ view.prototype.keyup = function(input, event){
   let value  = input.val().trim();
   this.value = value;
   
-  if([229, 8, 13].indexOf(event.keyCode) >= 0){
+  if([8, 13].indexOf(event.keyCode) >= 0){
+    console.log(event.keyCode);
     return;
   }
 
