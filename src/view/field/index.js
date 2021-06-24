@@ -5,6 +5,7 @@ module.exports = {
   'Text':          require('./text'),
   'Date':          require('./date'),
   'Numeric':       require('./numeric'),
+  'Decimal':       require('./decimal'),
   'Checkbox':      require('./checkbox'),
   'Select':        require('./select'),
   'TextMultiRow':  require('./textMultiRow'),
