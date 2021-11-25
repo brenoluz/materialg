@@ -38,7 +38,6 @@ view.prototype.makeInputs = function(){
   if(!this._edit)  this.phone.attr('disabled', 'disabled');
 
   this.inputs.append(this.phone);
-
 };
 
 view.prototype.format = function(value){

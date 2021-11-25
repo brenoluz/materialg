@@ -8,5 +8,7 @@ module.exports = {
   'Decimal':       require('./decimal'),
   'Checkbox':      require('./checkbox'),
   'Select':        require('./select'),
+  'Email':         require('./email'),
+  'Password':      require('./password'),
   'TextMultiRow':  require('./textMultiRow'),
 };
