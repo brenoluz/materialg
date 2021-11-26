@@ -9,5 +9,7 @@ module.exports = {
   'DateAtOrOver':      require('./dateAtOrOver'),
   'AtOrBelow':         require('./AtOrBelow'),
   'AtOrOver':          require('./AtOrOver'),
+  'Email':             require('./email'),
+  'Username':          require('./username'),
   'Base':              require('./base'),
 };

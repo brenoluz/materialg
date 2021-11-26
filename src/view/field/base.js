@@ -158,6 +158,12 @@ base.prototype.getErrors = function(){
   return this._errors;
 };
 
+base.prototype.showForced = function(){
+
+  this.message.text(this.forced[1]);
+  this.container.addClass('invalid');
+}
+
 base.prototype.isValid = function(cb, obj) {
 
   var self = this;
@@ -170,8 +176,7 @@ base.prototype.isValid = function(cb, obj) {
   this.container.removeClass('invalid');
 
   if(!!this.forced){
-    this.message.text(this.forced[1]);
-    this.container.addClass('invalid');
+    this.showForced();
     return cb(this.forced[0]);
   }
 

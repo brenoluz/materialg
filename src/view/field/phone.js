@@ -20,7 +20,7 @@ view.prototype.makeInputs = function(){
     var val   = $this.val();
 
     //Se foi apagado algum underline
-    var to_clean = (!!this.last_value && this.last_value.search('________') > 0 && val.search('________') < 0);
+    var to_clean = (!!self.last_value && self.last_value.search('________') > 0 && val.search('________') < 0);
 
     if(to_clean){
       val = '';
@@ -28,9 +28,9 @@ view.prototype.makeInputs = function(){
 
     var value = self.format.call(self, val); 
 
-    this.last_value = value;
+    self.last_value = value;
     $this.val(value);
-    this.onchange.call(self, self.value);
+    self.onchange.call(self, self.value);
   });
 
 

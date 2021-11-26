@@ -14,6 +14,10 @@ view.prototype.makeInputs = function(){
   this.inputs.html('');
 
   this.email = CE('input').attr('type', 'email');
+  this.email.change(event => {
+    this.value = this.email.val().trim();
+    this.onchange.call(this, this.value);
+  });
 
   if(!!this.value) this.email.val(this.value);
   if(!this._edit) this.email.attr('disabled', 'disabled');
