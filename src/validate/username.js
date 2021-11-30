@@ -16,7 +16,7 @@ username.prototype.isValid = function(value, cb){
     return cb(true);
   }
 
-  const regex = /^[a-zA-Z\-]+$/;
+  const regex = /^[a-zA-Z\-\.]+$/;
   const resp = !!value.match(regex);
 
   return cb(resp);
